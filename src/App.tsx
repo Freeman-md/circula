@@ -1,12 +1,12 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { RouterProvider } from 'react-router-dom'
+
+
+import ContactsPane from './components/ContactsPane';
+import router from './routes';
 
 function App() {
   return (
-    <div>
-      
-    </div>
+    <RouterProvider  router={router}/>
   );
 }
 
