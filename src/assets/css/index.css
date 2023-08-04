@@ -19,5 +19,14 @@ code {
 }
 
 .btn {
-  @apply flex items-center space-x-2 bg-secondary text-white px-4 py-1.5 rounded transition duration-200 focus:outline-none focus:border-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary;
+  @apply flex items-center space-x-2 bg-secondary text-white px-4 py-1.5 rounded transition duration-200 focus:outline-none focus:border-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary disabled:bg-opacity-50;
+}
+
+.form-control label {
+  @apply block mb-2 text-lg;
+}
+
+.form-control input,
+.form-control textarea {
+  @apply bg-secondary/10 w-full rounded px-4 py-2 focus:border-none focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 transition duration-200
 }
