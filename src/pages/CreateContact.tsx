@@ -1,7 +1,11 @@
-import { ChangeEvent, useReducer } from "react"
+import { FormEvent } from "react"
 import useInput from "../hooks/useInput"
+import { useAppDispatch } from "../hooks/useReduxHooks"
+import { addContact } from "../store/contacts/contactsActions"
 
 const CreateContact = () => {
+    const dispatch = useAppDispatch()
+
     const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     const phoneRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/
 
@@ -15,8 +19,11 @@ const CreateContact = () => {
 
     const formIsValid: boolean = firstName.isValid && lastName.isValid && email.isValid && phone.isValid && company.isValid && address.isValid && notes.isValid
 
-    const createContact = () => {
+    const createContact = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault()
+
         // process form submission
+        dispatch(addContact())
     }
 
 
