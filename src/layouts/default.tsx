@@ -1,6 +1,5 @@
 import { Outlet } from 'react-router-dom'
 
-import Header from '../components/Layout/Header';
 import Sidebar from '../components/Layout/Sidebar';
 
 const DefaultLayout = () => {

@@ -1,7 +1,25 @@
+import { collection, getDocs } from 'firebase/firestore/lite';
+import { db } from '../../db/firebase';
+import { AppDispatch } from '..';
+import { setContacts } from './contactsSlice';
+
 export const fetchContacts = () => {
-    return async () => {
-        console.log('fetching contacts')
-        // send request to fetch contacts from firebase cloud firestore
+    return async (dispatch: AppDispatch) => {
+        // get contacts collection
+        const contactsCollection = collection(db, 'contacts')
+
+        // make request to get current snapshot of collection
+        const contactsSnapshot = await getDocs(contactsCollection)
+        
+        // get raw data for each item in snapshot and store in contacts list
+        const contactsList = contactsSnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+        }))
+
+        dispatch(setContacts({
+            contacts: contactsList
+        }))
     }
 }
 
