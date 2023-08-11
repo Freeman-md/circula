@@ -1,9 +1,10 @@
-import { collection, getDocs } from 'firebase/firestore/lite';
+import { addDoc, collection, getDocs } from 'firebase/firestore/lite';
 import { db } from '../../db/firebase';
 import { AppDispatch } from '..';
 import { setContacts } from './contactsSlice';
+import { Contact } from '../../types';
 
-export const fetchContacts = () => {
+export const getContacts = () => {
     return async (dispatch: AppDispatch) => {
         // get contacts collection
         const contactsCollection = collection(db, 'contacts')
@@ -23,9 +24,11 @@ export const fetchContacts = () => {
     }
 }
 
-export const addContact = () => {
-    return async () => {
-        console.log('adding contact')
-        // send request to firebase cloud firestore to add contacts
+export const createContact = (contact: Contact) => {
+    return async (dispatch: AppDispatch) => {
+        // send request to firebase cloud firestore to add contact
+        const docRef = await addDoc(collection(db, 'contacts'), contact)
+
+        console.log('Contact added with ID: ' + docRef.id)
     }
 }

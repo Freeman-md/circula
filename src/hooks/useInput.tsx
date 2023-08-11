@@ -29,8 +29,8 @@ const useInput = (validationLogic: Function, errorMessage: string, required: boo
                 }
 
                 return {
-                    error: !isInputValid ? errorMessage : '',
-                    isValid: isInputValid,
+                    error: value && !isInputValid ? errorMessage : '',
+                    isValid: isInputValid, 
                     value,
                 }
             default:
@@ -49,8 +49,14 @@ const useInput = (validationLogic: Function, errorMessage: string, required: boo
         })
     }
 
+    const clearInput = () => dispatch({
+        type: 'INPUT',
+        payload: ''
+    })
+
     return {
         valueOnChangeHandler,
+        clearInput,
         state: value, // state object with properties value, isValid, and error
         validateInput: validationLogic
     }
