@@ -1,4 +1,5 @@
 export interface Contact {
+    id?: string,
     firstName: string,
     lastName: string,
     email: string,
@@ -6,4 +7,8 @@ export interface Contact {
     address: string,
     company: string,
     notes: string
+}
+
+export interface GroupedContacts {
+    [key: string]: Contact[]
 }

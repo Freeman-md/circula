@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom'
 import { useEffect } from 'react';
 
-import Sidebar from '../components/Layout/Sidebar';
+import ContactsSidebar from '../components/ContactsSidebar';
 import { getContacts } from '../store/contacts/contactsActions';
 import { useAppDispatch } from '../hooks/useReduxHooks';
 
@@ -13,7 +13,7 @@ const DefaultLayout = () => {
     }, [dispatch])
 
     return <div className='flex h-screen overflow-hidden'>
-        <Sidebar classes='w-1/4 h-screen' />
+        <ContactsSidebar classes='w-1/4 h-screen' />
         <main className='w-3/4 h-screen overflow-scroll'>
             <Outlet />
         </main>

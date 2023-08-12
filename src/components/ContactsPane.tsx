@@ -1,9 +1,20 @@
 import { Fragment } from "react"
 import ContactsEmpty from "./ContactsEmpty"
+import { Contact } from "../types"
+import ContactCard from "./ContactCard"
 
-const ContactsPane = () => {
+const ContactsPane = ({ contacts }: { contacts: Contact[] }) => {
     return <Fragment>
-        <ContactsEmpty />
+        {
+            !contacts
+                ? <ContactsEmpty />
+                : <div>
+                    {
+                        contacts.map(contact => <ContactCard key={contact.id} contact={contact} />)
+                    }
+                </div>
+        }
+
     </Fragment>
 }
 

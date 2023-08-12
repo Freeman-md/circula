@@ -11,11 +11,11 @@ export const getContacts = () => {
 
         // make request to get current snapshot of collection
         const contactsSnapshot = await getDocs(contactsCollection)
-        
+
         // get raw data for each item in snapshot and store in contacts list
-        const contactsList = contactsSnapshot.docs.map(doc => ({
+        const contactsList: Contact[] = contactsSnapshot.docs.map(doc => ({
             id: doc.id,
-            ...doc.data()
+            ...doc.data() as Contact
         }))
 
         dispatch(setContacts({
