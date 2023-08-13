@@ -10,13 +10,13 @@ const CreateContact = () => {
     const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     const phoneRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/
 
-    const { state: firstName, valueOnChangeHandler: firstNameOnChangeHandler, clearInput: clearFirstNameInput } = useInput((value: string) => value.length !== 0, 'Please enter a first name')
-    const { state: lastName, valueOnChangeHandler: lastNameOnChangeHandler, clearInput: clearLastNameInput } = useInput((value: string) => value.length !== 0, 'Please enter a last name')
-    const { state: email, valueOnChangeHandler: emailOnChangeHandler, clearInput: clearEmailInput } = useInput((value: string) => emailRegex.test(value), 'Please enter a valid email address')
-    const { state: phone, valueOnChangeHandler: phoneOnChangeHandler, clearInput: clearPhoneInput } = useInput((value: string) => phoneRegex.test(value), 'Please enter a valid phone number')
-    const { state: company, valueOnChangeHandler: companyOnChangeHandler, clearInput: clearCompanyInput } = useInput((value: string) => value.length !== 0, 'Please enter a company', false)
-    const { state: address, valueOnChangeHandler: addressOnChangeHandler, clearInput: clearAddressInput } = useInput((value: string) => value.length !== 0, 'Please enter a valid address', false)
-    const { state: notes, valueOnChangeHandler: notesOnChangeHandler, clearInput: clearNotesInput } = useInput((value: string) => value.length !== 0, 'Notes is required', false)
+    const { state: firstName, valueOnChangeHandler: firstNameOnChangeHandler, clearInput: clearFirstNameInput } = useInput((value: string) => value.length !== 0, 'Please enter a first name', true)
+    const { state: lastName, valueOnChangeHandler: lastNameOnChangeHandler, clearInput: clearLastNameInput } = useInput((value: string) => value.length !== 0, 'Please enter a last name', true)
+    const { state: email, valueOnChangeHandler: emailOnChangeHandler, clearInput: clearEmailInput } = useInput((value: string) => emailRegex.test(value), 'Please enter a valid email address', true)
+    const { state: phone, valueOnChangeHandler: phoneOnChangeHandler, clearInput: clearPhoneInput } = useInput((value: string) => phoneRegex.test(value), 'Please enter a valid phone number', true)
+    const { state: company, valueOnChangeHandler: companyOnChangeHandler, clearInput: clearCompanyInput } = useInput()
+    const { state: address, valueOnChangeHandler: addressOnChangeHandler, clearInput: clearAddressInput } = useInput()
+    const { state: notes, valueOnChangeHandler: notesOnChangeHandler, clearInput: clearNotesInput } = useInput()
 
     const formIsValid: boolean = firstName.isValid && lastName.isValid && email.isValid && phone.isValid && company.isValid && address.isValid && notes.isValid
 

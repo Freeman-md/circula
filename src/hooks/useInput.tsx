@@ -10,7 +10,7 @@ interface InputAction {
     payload: string,
 }
 
-const useInput = (validationLogic: Function, errorMessage: string, required: boolean = true) => {
+const useInput = (validationLogic: Function = (value: string) => value.length !== 0, errorMessage: string = 'Invalid input', required: boolean = false) => {
     const initialInputState: InputState = {
         value: '',
         error: '',
