@@ -3,7 +3,8 @@ import { useState, useEffect } from 'react'
 import { useAppSelector } from '../hooks/useReduxHooks'
 import ContactsPane from './ContactsPane'
 import SearchPane from './SearchPane'
-import { Contact } from '../types'
+import { Contact, GroupedContacts } from '../types'
+import { groupAndSortContactsByFirstLetter } from '../utils'
 
 interface Props {
     classes?: string
@@ -11,23 +12,20 @@ interface Props {
 
 const ContactsSidebar = ({ classes = 'h-screen w-1/4' }: Props) => {
     const [searchText, setSearchText] = useState<string>('')
-    const [filteredContacts, setFilteredContacts] = useState<Contact[]>([])
+    const [filteredContacts, setFilteredContacts] = useState<GroupedContacts>({})
 
     const contacts: Contact[] = useAppSelector(state => state.contacts.contacts)
 
     useEffect(() => {
-        setFilteredContacts(() => {
-            return contacts
-                .filter(contact => contact.firstName.includes(searchText))
-                .sort((a, b) => {
-                    if (a.firstName > b.firstName) return 1
-                    else if (a.firstName < b.firstName) return -1
-                    else return 0
-                })
-        })
+        setFilteredContacts(() =>
+            groupAndSortContactsByFirstLetter(
+                contacts
+                    .filter(contact => contact.firstName.includes(searchText))
+            )
+        )
     }, [searchText, contacts])
 
-    return <div className={[classes, 'container flex flex-col space-y-4 py-10'].join(' ')}>
+    return <div className={[classes, 'space-y-4 pt-10 pb-2'].join(' ')}>
         <SearchPane />
         <ContactsPane contacts={filteredContacts} />
     </div>

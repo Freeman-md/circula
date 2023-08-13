@@ -1,21 +1,28 @@
-import { Fragment } from "react"
 import ContactsEmpty from "./ContactsEmpty"
-import { Contact } from "../types"
+import { GroupedContacts } from "../types"
 import ContactCard from "./ContactCard"
 
-const ContactsPane = ({ contacts }: { contacts: Contact[] }) => {
-    return <Fragment>
+const ContactsPane = ({ contacts: groupedContacts }: { contacts: GroupedContacts }) => {
+    
+    return <div className="h-full overflow-scroll overflow-x-hidden">
         {
-            !contacts
+            !groupedContacts
                 ? <ContactsEmpty />
-                : <div>
-                    {
-                        contacts.map(contact => <ContactCard key={contact.id} contact={contact} />)
+                : Object.keys(groupedContacts)
+                .map(
+                    group => <div className="space-y-2 pb-4 px-2" key={group}>
+                        <p>{group}</p>
+                        <hr />
+
+                        {
+                        groupedContacts[group].map(contact => <ContactCard key={contact.id} contact={contact} />)
                     }
-                </div>
+
+                    </div>
+                )
         }
 
-    </Fragment>
+    </div>
 }
 
 export default ContactsPane

@@ -13,8 +13,8 @@ const DefaultLayout = () => {
     }, [dispatch])
 
     return <div className='flex h-screen overflow-hidden'>
-        <ContactsSidebar classes='w-1/4 h-screen' />
-        <main className='w-3/4 h-screen overflow-scroll'>
+        <ContactsSidebar classes='w-1/4 h-screen shadow' />
+        <main className='w-3/4 h-screen overflow-scroll container'>
             <Outlet />
         </main>
     </div>
