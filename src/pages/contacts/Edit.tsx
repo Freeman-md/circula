@@ -3,20 +3,23 @@ import useInput from "../../hooks/useInput"
 import { useAppDispatch } from "../../hooks/useReduxHooks"
 import { createContact } from "../../store/contacts/contactsActions"
 import { Contact } from "../../types"
+import { useRouteLoaderData } from "react-router-dom"
 
-const Create = () => {
+const Edit = () => {
     const dispatch = useAppDispatch()
+
+    const contact = useRouteLoaderData('get-contact') as Contact
 
     const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     const phoneRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/
 
-    const { state: firstName, valueOnChangeHandler: firstNameOnChangeHandler, clearInput: clearFirstNameInput } = useInput('', (value: string) => value.length !== 0, 'Please enter a first name', true)
-    const { state: lastName, valueOnChangeHandler: lastNameOnChangeHandler, clearInput: clearLastNameInput } = useInput('', (value: string) => value.length !== 0, 'Please enter a last name', true)
-    const { state: email, valueOnChangeHandler: emailOnChangeHandler, clearInput: clearEmailInput } = useInput('', (value: string) => emailRegex.test(value), 'Please enter a valid email address', true)
-    const { state: phone, valueOnChangeHandler: phoneOnChangeHandler, clearInput: clearPhoneInput } = useInput('', (value: string) => phoneRegex.test(value), 'Please enter a valid phone number', true)
-    const { state: company, valueOnChangeHandler: companyOnChangeHandler, clearInput: clearCompanyInput } = useInput()
-    const { state: address, valueOnChangeHandler: addressOnChangeHandler, clearInput: clearAddressInput } = useInput()
-    const { state: notes, valueOnChangeHandler: notesOnChangeHandler, clearInput: clearNotesInput } = useInput()
+    const { state: firstName, valueOnChangeHandler: firstNameOnChangeHandler, clearInput: clearFirstNameInput } = useInput(contact.firstName, (value: string) => value.length !== 0, 'Please enter a first name', true)
+    const { state: lastName, valueOnChangeHandler: lastNameOnChangeHandler, clearInput: clearLastNameInput } = useInput(contact.lastName, (value: string) => value.length !== 0, 'Please enter a last name', true)
+    const { state: email, valueOnChangeHandler: emailOnChangeHandler, clearInput: clearEmailInput } = useInput(contact.email, (value: string) => emailRegex.test(value), 'Please enter a valid email address', true)
+    const { state: phone, valueOnChangeHandler: phoneOnChangeHandler, clearInput: clearPhoneInput } = useInput(contact.phone, (value: string) => phoneRegex.test(value), 'Please enter a valid phone number', true)
+    const { state: company, valueOnChangeHandler: companyOnChangeHandler, clearInput: clearCompanyInput } = useInput(contact.company)
+    const { state: address, valueOnChangeHandler: addressOnChangeHandler, clearInput: clearAddressInput } = useInput(contact.address)
+    const { state: notes, valueOnChangeHandler: notesOnChangeHandler, clearInput: clearNotesInput } = useInput(contact.notes)
 
     const formIsValid: boolean = firstName.isValid && lastName.isValid && email.isValid && phone.isValid && company.isValid && address.isValid && notes.isValid
 
@@ -50,7 +53,7 @@ const Create = () => {
 
 
     return <div className="py-10 container space-y-6">
-        <h1 className="text-5xl font-semibold text-secondary">Create contact</h1>
+        <h1 className="text-5xl font-semibold text-secondary">Edit contact</h1>
 
         <form onSubmit={createContactHandler} className="grid grid-cols-2 gap-6 w-3/4">
 
@@ -104,4 +107,4 @@ const Create = () => {
     </div>
 }
 
-export default Create
+export default Edit

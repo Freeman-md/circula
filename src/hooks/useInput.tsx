@@ -10,9 +10,9 @@ interface InputAction {
     payload: string,
 }
 
-const useInput = (validationLogic: Function = (value: string) => value.length !== 0, errorMessage: string = 'Invalid input', required: boolean = false) => {
+const useInput = (defaultValue: string = '', validationLogic: Function = (value: string) => value.length !== 0, errorMessage: string = 'Invalid input', required: boolean = false, ) => {
     const initialInputState: InputState = {
-        value: '',
+        value: defaultValue,
         error: '',
         isValid: !required // set input to valid at default if input is not required
     }

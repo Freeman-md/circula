@@ -3,7 +3,8 @@ import DefaultLayout from '../layouts/default'
 import Home from '../pages/Home'
 import Create from '../pages/contacts/Create'
 import ErrorPage from '../pages/Error'
-import View, { loader as viewContactLoader } from '../pages/contacts/View'
+import View, { loader as getContactLoader } from '../pages/contacts/View'
+import Edit from '../pages/contacts/Edit'
 
 const router = createBrowserRouter([
     {
@@ -19,9 +20,19 @@ const router = createBrowserRouter([
                 element: <Create />,
             },
             {
-                path: '/:id',
-                element: <View />,
-                loader: viewContactLoader
+                path: '/:id/',
+                id: 'get-contact',
+                loader: getContactLoader,
+                children: [
+                    {
+                        index: true,
+                        element: <View />,
+                    },
+                    {
+                        path: 'edit',
+                        element: <Edit /> 
+                    }
+                ]
             }
         ]
     }
