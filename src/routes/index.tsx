@@ -1,13 +1,14 @@
 import { createBrowserRouter } from 'react-router-dom'
 import DefaultLayout from '../layouts/default'
 import Home from '../pages/Home'
-import CreateContact from '../pages/contacts/Create'
-import Error from '../layouts/error'
+import Create from '../pages/contacts/Create'
+import ErrorPage from '../pages/Error'
+import View, { loader as viewContactLoader } from '../pages/contacts/View'
 
 const router = createBrowserRouter([
     {
         element: <DefaultLayout />,
-        errorElement: <Error />,
+        errorElement: <ErrorPage />,
         children: [
             {
                 path: '/',
@@ -15,7 +16,12 @@ const router = createBrowserRouter([
             },
             {
                 path: '/create',
-                element: <CreateContact />,
+                element: <Create />,
+            },
+            {
+                path: '/:id',
+                element: <View />,
+                loader: viewContactLoader
             }
         ]
     }

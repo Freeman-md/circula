@@ -4,7 +4,7 @@ import { useAppDispatch } from "../../hooks/useReduxHooks"
 import { createContact } from "../../store/contacts/contactsActions"
 import { Contact } from "../../types"
 
-const CreateContact = () => {
+const Create = () => {
     const dispatch = useAppDispatch()
 
     const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -104,4 +104,4 @@ const CreateContact = () => {
     </div>
 }
 
-export default CreateContact
+export default Create
