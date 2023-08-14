@@ -37,6 +37,8 @@ const Edit = () => {
             notes: notes.value
         }
 
+        if (!formIsValid) return
+
         await dispatch(updateContact(updatedContact))
     }
 

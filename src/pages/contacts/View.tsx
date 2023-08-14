@@ -8,6 +8,7 @@ import { ReactComponent as Phone } from '../../assets/svgs/phone.svg'
 import { ReactComponent as Envelope } from '../../assets/svgs/envelope.svg'
 import { ReactComponent as QrCode } from '../../assets/svgs/qr-code.svg'
 import Jumbotron from "../../components/Jumbotron"
+import contactsService from "../../lib/firebase"
 
 const View = () => {
     const contact = useRouteLoaderData('get-contact') as Contact
@@ -72,10 +73,7 @@ const View = () => {
 export default View
 
 export async function loader({ params }: LoaderFunctionArgs) {
-    const id = params.id!
-
-    const docRef = doc(db, 'contacts', id)
-    const docSnap = await getDoc(docRef)
+    const docSnap = await contactsService.fetchContact(params.id!)
 
     if (!docSnap.exists()) {
         throw json({ message: "Contact information not found" }, { status: 404 })

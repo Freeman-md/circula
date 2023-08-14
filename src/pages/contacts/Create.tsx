@@ -43,6 +43,8 @@ const Create = () => {
             notes: notes.value
         }
 
+        if (!formIsValid) return
+
         await dispatch(createContact(contact))
 
         clearInputs()

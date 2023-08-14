@@ -1,4 +1,4 @@
-import { addDoc, collection, doc, getDocs, setDoc } from "firebase/firestore/lite"
+import { addDoc, collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore/lite"
 import { Contact } from "../types"
 import { db } from "../db/firebase"
 
@@ -18,6 +18,12 @@ const fetchContacts = async () => {
     return contactsList
 }
 
+const fetchContact = async (id: string) => {
+    const docRef = doc(db, 'contacts', id)
+
+    return await getDoc(docRef)
+}
+
 const createContact = async (contact: Contact) => {
     // send request to firebase cloud firestore to add contact
     const docRef = await addDoc(collection(db, 'contacts'), contact)
@@ -35,6 +41,7 @@ const updateContact = async (contact: Contact) => {
 
 const contactsService = {
     fetchContacts,
+    fetchContact,
     createContact,
     updateContact
 }
