@@ -1,10 +1,10 @@
 import { createBrowserRouter } from 'react-router-dom'
 import DefaultLayout from '../layouts/default'
 import Home from '../pages/Home'
-import Create from '../pages/contacts/Create'
+import Create, { action as createAction } from '../pages/contacts/Create'
 import ErrorPage from '../pages/Error'
 import View, { loader as getContactLoader } from '../pages/contacts/View'
-import Edit from '../pages/contacts/Edit'
+import Edit, { action as editAction } from '../pages/contacts/Edit'
 
 const router = createBrowserRouter([
     {
@@ -18,6 +18,7 @@ const router = createBrowserRouter([
             {
                 path: '/create',
                 element: <Create />,
+                action: createAction,
             },
             {
                 path: '/:id/',
@@ -30,7 +31,8 @@ const router = createBrowserRouter([
                     },
                     {
                         path: 'edit',
-                        element: <Edit /> 
+                        element: <Edit />,
+                        action: editAction
                     }
                 ]
             }

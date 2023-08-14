@@ -1,12 +1,9 @@
-import { FormEvent } from "react"
 import useInput from "../../hooks/useInput"
-import { useAppDispatch } from "../../hooks/useReduxHooks"
-import { createContact } from "../../store/contacts/contactsActions"
 import { Contact } from "../../types"
+import { ActionFunctionArgs, Form, redirect } from "react-router-dom"
+import contactsService from "../../lib/firebase"
 
 const Create = () => {
-    const dispatch = useAppDispatch()
-
     const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     const phoneRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/
 
@@ -30,31 +27,11 @@ const Create = () => {
         clearNotesInput()
     }
 
-    const createContactHandler = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-
-        const contact: Contact = {
-            firstName: firstName.value,
-            lastName: lastName.value,
-            email: email.value,
-            phone: phone.value,
-            company: company.value,
-            address: address.value,
-            notes: notes.value
-        }
-
-        if (!formIsValid) return
-
-        await dispatch(createContact(contact))
-
-        clearInputs()
-    }
-
 
     return <div className="py-10 container space-y-6">
         <h1 className="text-3xl font-semibold text-secondary">Create contact</h1>
 
-        <form onSubmit={createContactHandler} className="grid grid-cols-2 gap-6 w-3/4">
+        <Form method="post" className="grid grid-cols-2 gap-6 w-3/4">
 
             <div className="form-control">
                 <label htmlFor="first_name">First name <span className="text-red-500">*</span></label>
@@ -102,8 +79,28 @@ const Create = () => {
                 <button disabled={!formIsValid} className="btn">Create</button>
             </div>
 
-        </form>
+        </Form>
     </div>
 }
 
 export default Create
+
+export async function action({ request }: ActionFunctionArgs) {
+    const data: FormData = await request.formData()
+
+    const contactData: Contact = {
+        firstName: data.get('first_name')?.toString() ?? '',
+        lastName: data.get('last_name')?.toString() ?? '',
+        email: data.get('email')?.toString() ?? '',
+        phone: data.get('phone')?.toString() ?? '',
+        company: data.get('company')?.toString() ?? '',
+        address: data.get('address')?.toString() ?? '',
+        notes: data.get('notes')?.toString() ?? ''
+    }
+
+    const contact = await contactsService.createContact(contactData)
+
+    console.log('Contact added with ID: ' + contact.id)
+
+    return redirect(`/${contact.id}/edit`)
+}

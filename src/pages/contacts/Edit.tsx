@@ -1,13 +1,9 @@
-import { FormEvent } from "react"
 import useInput from "../../hooks/useInput"
-import { useAppDispatch } from "../../hooks/useReduxHooks"
-import { updateContact } from "../../store/contacts/contactsActions"
 import { Contact } from "../../types"
-import { useParams, useRouteLoaderData } from "react-router-dom"
+import { ActionFunctionArgs, Form, redirect, useRouteLoaderData } from "react-router-dom"
+import contactsService from "../../lib/firebase"
 
 const Edit = () => {
-    const dispatch = useAppDispatch()
-    const { id: contactId } = useParams()
     const contact = useRouteLoaderData('get-contact') as Contact
 
     const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -23,30 +19,10 @@ const Edit = () => {
 
     const formIsValid: boolean = firstName.isValid && lastName.isValid && email.isValid && phone.isValid && company.isValid && address.isValid && notes.isValid
 
-    const updateContactHandler = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-
-        const updatedContact: Contact = {
-            id: contactId,
-            firstName: firstName.value,
-            lastName: lastName.value,
-            email: email.value,
-            phone: phone.value,
-            company: company.value,
-            address: address.value,
-            notes: notes.value
-        }
-
-        if (!formIsValid) return
-
-        await dispatch(updateContact(updatedContact))
-    }
-
-
     return <div className="py-10 container space-y-6">
         <h1 className="text-3xl font-semibold text-secondary">Edit contact</h1>
 
-        <form onSubmit={updateContactHandler} className="grid grid-cols-2 gap-6 w-3/4">
+        <Form method="post" className="grid grid-cols-2 gap-6 w-3/4">
 
             <div className="form-control">
                 <label htmlFor="first_name">First name <span className="text-red-500">*</span></label>
@@ -94,8 +70,30 @@ const Edit = () => {
                 <button disabled={!formIsValid} className="btn">Update</button>
             </div>
 
-        </form>
+        </Form>
     </div>
 }
 
 export default Edit
+
+export async function action({ request, params }: ActionFunctionArgs) {
+    const contactId = params.id
+    const data: FormData = await request.formData()
+
+    const contactData: Contact = {
+        id: contactId,
+        firstName: data.get('first_name')?.toString() ?? '',
+        lastName: data.get('last_name')?.toString() ?? '',
+        email: data.get('email')?.toString() ?? '',
+        phone: data.get('phone')?.toString() ?? '',
+        company: data.get('company')?.toString() ?? '',
+        address: data.get('address')?.toString() ?? '',
+        notes: data.get('notes')?.toString() ?? ''
+    }
+
+    await contactsService.updateContact(contactData)
+
+    console.log('Contact updated with ID: ' + contactData.id)
+
+    return redirect(`/${contactId}`)
+}

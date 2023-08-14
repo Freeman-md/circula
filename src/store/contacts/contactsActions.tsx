@@ -13,19 +13,3 @@ export const getContacts = () => {
         }))
     }
 }
-
-export const createContact = (contact: Contact) => {
-    return async (dispatch: AppDispatch) => {
-        const docRef = await contactService.createContact(contact)
-
-        console.log('Contact added with ID: ' + docRef.id)
-    }
-}
-
-export const updateContact = (contact: Contact) => {
-    return async (dispatch: AppDispatch) => {
-        await contactService.updateContact(contact)
-
-        console.log('Contact updated with ID: ' + contact.id)
-    }
-}
