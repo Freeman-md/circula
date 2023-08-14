@@ -1,11 +1,15 @@
 import useInput from "../../hooks/useInput"
 import { Contact } from "../../types"
-import { ActionFunctionArgs, Form, redirect } from "react-router-dom"
+import { ActionFunctionArgs, Form, redirect, useNavigation } from "react-router-dom"
 import contactsService from "../../lib/firebase"
 
 const Create = () => {
     const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     const phoneRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/
+
+    const navigation = useNavigation()
+
+    const isFormSubmitting = navigation.state === 'submitting'
 
     const { state: firstName, valueOnChangeHandler: firstNameOnChangeHandler, clearInput: clearFirstNameInput } = useInput('', (value: string) => value.length !== 0, 'Please enter a first name', true)
     const { state: lastName, valueOnChangeHandler: lastNameOnChangeHandler, clearInput: clearLastNameInput } = useInput('', (value: string) => value.length !== 0, 'Please enter a last name', true)
@@ -76,7 +80,9 @@ const Create = () => {
             </div>
 
             <div className="col-span-2 pt-4">
-                <button disabled={!formIsValid} className="btn">Create</button>
+                <button disabled={!formIsValid || isFormSubmitting} className="btn">
+                    { !isFormSubmitting ? 'Create' : 'Submitting...' }
+                </button>
             </div>
 
         </Form>
