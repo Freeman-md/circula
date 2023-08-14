@@ -72,9 +72,9 @@ const View = () => {
 export default View
 
 export async function loader({ params }: LoaderFunctionArgs) {
-    const id = params.id
+    const id = params.id!
 
-    const docRef = doc(db, 'contacts', 'y3nEStpbp0RoPo2uyTRi')
+    const docRef = doc(db, 'contacts', id)
     const docSnap = await getDoc(docRef)
 
     if (!docSnap.exists()) {

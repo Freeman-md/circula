@@ -1,4 +1,4 @@
-import { addDoc, collection, getDocs } from 'firebase/firestore/lite';
+import { addDoc, collection, doc, getDocs, setDoc } from 'firebase/firestore/lite';
 import { db } from '../../db/firebase';
 import { AppDispatch } from '..';
 import { setContacts } from './contactsSlice';
@@ -30,5 +30,19 @@ export const createContact = (contact: Contact) => {
         const docRef = await addDoc(collection(db, 'contacts'), contact)
 
         console.log('Contact added with ID: ' + docRef.id)
+    }
+}
+
+export const updateContact = (contact: Contact) => {
+    return async (dispatch: AppDispatch) => {
+        // use non-null assertion operator ('!') to enforce id is not undefined
+        const id = contact.id!
+
+        console.log(contact)
+        
+        // send request to firebase cloud firestore to update contact
+        await setDoc(doc(db, 'contacts', id), contact)
+
+        console.log('Contact updated with ID: ' + contact.id)
     }
 }

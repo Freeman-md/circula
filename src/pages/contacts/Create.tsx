@@ -50,7 +50,7 @@ const Create = () => {
 
 
     return <div className="py-10 container space-y-6">
-        <h1 className="text-5xl font-semibold text-secondary">Create contact</h1>
+        <h1 className="text-3xl font-semibold text-secondary">Create contact</h1>
 
         <form onSubmit={createContactHandler} className="grid grid-cols-2 gap-6 w-3/4">
 

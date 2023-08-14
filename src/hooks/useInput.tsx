@@ -1,4 +1,4 @@
-import { ChangeEvent, useReducer } from "react"
+import { ChangeEvent, useReducer, useEffect } from "react"
 
 interface InputState {
     value: string,
@@ -10,7 +10,7 @@ interface InputAction {
     payload: string,
 }
 
-const useInput = (defaultValue: string = '', validationLogic: Function = (value: string) => value.length !== 0, errorMessage: string = 'Invalid input', required: boolean = false, ) => {
+const useInput = (defaultValue: string = '', validationLogic: Function = (value: string) => value.length !== 0, errorMessage: string = 'Invalid input', required: boolean = false,) => {
     const initialInputState: InputState = {
         value: defaultValue,
         error: '',
@@ -22,15 +22,15 @@ const useInput = (defaultValue: string = '', validationLogic: Function = (value:
             case 'INPUT':
                 const value = action.payload
                 let isInputValid: boolean = state.isValid
-                
+
                 // validate input only if it is required
                 if (required) {
                     isInputValid = validationLogic(value)
                 }
 
                 return {
-                    error: value && !isInputValid ? errorMessage : '',
-                    isValid: isInputValid, 
+                    error: !isInputValid ? errorMessage : '',
+                    isValid: isInputValid,
                     value,
                 }
             default:
@@ -41,6 +41,15 @@ const useInput = (defaultValue: string = '', validationLogic: Function = (value:
     }
 
     const [value, dispatch] = useReducer(inputReducer, initialInputState)
+
+    useEffect(() => {
+        if (!defaultValue) return 
+
+        dispatch({
+            type: 'INPUT',
+            payload: defaultValue
+        })
+    }, [defaultValue])
 
     const valueOnChangeHandler = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         dispatch({

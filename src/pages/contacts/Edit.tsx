@@ -1,42 +1,33 @@
 import { FormEvent } from "react"
 import useInput from "../../hooks/useInput"
 import { useAppDispatch } from "../../hooks/useReduxHooks"
-import { createContact } from "../../store/contacts/contactsActions"
+import { updateContact } from "../../store/contacts/contactsActions"
 import { Contact } from "../../types"
-import { useRouteLoaderData } from "react-router-dom"
+import { useParams, useRouteLoaderData } from "react-router-dom"
 
 const Edit = () => {
     const dispatch = useAppDispatch()
-
+    const { id: contactId } = useParams()
     const contact = useRouteLoaderData('get-contact') as Contact
 
     const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     const phoneRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/
 
-    const { state: firstName, valueOnChangeHandler: firstNameOnChangeHandler, clearInput: clearFirstNameInput } = useInput(contact.firstName, (value: string) => value.length !== 0, 'Please enter a first name', true)
-    const { state: lastName, valueOnChangeHandler: lastNameOnChangeHandler, clearInput: clearLastNameInput } = useInput(contact.lastName, (value: string) => value.length !== 0, 'Please enter a last name', true)
-    const { state: email, valueOnChangeHandler: emailOnChangeHandler, clearInput: clearEmailInput } = useInput(contact.email, (value: string) => emailRegex.test(value), 'Please enter a valid email address', true)
-    const { state: phone, valueOnChangeHandler: phoneOnChangeHandler, clearInput: clearPhoneInput } = useInput(contact.phone, (value: string) => phoneRegex.test(value), 'Please enter a valid phone number', true)
-    const { state: company, valueOnChangeHandler: companyOnChangeHandler, clearInput: clearCompanyInput } = useInput(contact.company)
-    const { state: address, valueOnChangeHandler: addressOnChangeHandler, clearInput: clearAddressInput } = useInput(contact.address)
-    const { state: notes, valueOnChangeHandler: notesOnChangeHandler, clearInput: clearNotesInput } = useInput(contact.notes)
+    const { state: firstName, valueOnChangeHandler: firstNameOnChangeHandler } = useInput(contact.firstName, (value: string) => value.length !== 0, 'Please enter a first name', true)
+    const { state: lastName, valueOnChangeHandler: lastNameOnChangeHandler } = useInput(contact.lastName, (value: string) => value.length !== 0, 'Please enter a last name', true)
+    const { state: email, valueOnChangeHandler: emailOnChangeHandler } = useInput(contact.email, (value: string) => emailRegex.test(value), 'Please enter a valid email address', true)
+    const { state: phone, valueOnChangeHandler: phoneOnChangeHandler } = useInput(contact.phone, (value: string) => phoneRegex.test(value), 'Please enter a valid phone number', true)
+    const { state: company, valueOnChangeHandler: companyOnChangeHandler } = useInput(contact.company)
+    const { state: address, valueOnChangeHandler: addressOnChangeHandler } = useInput(contact.address)
+    const { state: notes, valueOnChangeHandler: notesOnChangeHandler } = useInput(contact.notes)
 
     const formIsValid: boolean = firstName.isValid && lastName.isValid && email.isValid && phone.isValid && company.isValid && address.isValid && notes.isValid
 
-    const clearInputs = () => {
-        clearFirstNameInput()
-        clearLastNameInput()
-        clearEmailInput()
-        clearPhoneInput()
-        clearCompanyInput()
-        clearAddressInput()
-        clearNotesInput()
-    }
-
-    const createContactHandler = async (e: FormEvent<HTMLFormElement>) => {
+    const updateContactHandler = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        const contact: Contact = {
+        const updatedContact: Contact = {
+            id: contactId,
             firstName: firstName.value,
             lastName: lastName.value,
             email: email.value,
@@ -46,16 +37,14 @@ const Edit = () => {
             notes: notes.value
         }
 
-        await dispatch(createContact(contact))
-
-        clearInputs()
+        await dispatch(updateContact(updatedContact))
     }
 
 
     return <div className="py-10 container space-y-6">
-        <h1 className="text-5xl font-semibold text-secondary">Edit contact</h1>
+        <h1 className="text-3xl font-semibold text-secondary">Edit contact</h1>
 
-        <form onSubmit={createContactHandler} className="grid grid-cols-2 gap-6 w-3/4">
+        <form onSubmit={updateContactHandler} className="grid grid-cols-2 gap-6 w-3/4">
 
             <div className="form-control">
                 <label htmlFor="first_name">First name <span className="text-red-500">*</span></label>
@@ -100,7 +89,7 @@ const Edit = () => {
             </div>
 
             <div className="col-span-2 pt-4">
-                <button disabled={!formIsValid} className="btn">Create</button>
+                <button disabled={!formIsValid} className="btn">Update</button>
             </div>
 
         </form>
