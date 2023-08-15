@@ -3,8 +3,8 @@ import DefaultLayout from '../layouts/default'
 import Home from '../pages/Home'
 import Create, { action as createAction } from '../pages/contacts/Create'
 import ErrorPage from '../pages/Error'
-import View, { loader as getContactLoader } from '../pages/contacts/View'
-import Edit, { action as editAction } from '../pages/contacts/Edit'
+import View, { loader as getContactLoader, action as deleteContactAction } from '../pages/contacts/View'
+import Edit, { action as editContactAction } from '../pages/contacts/Edit'
 
 const router = createBrowserRouter([
     {
@@ -28,12 +28,13 @@ const router = createBrowserRouter([
                     {
                         index: true,
                         element: <View />,
+                        action: deleteContactAction
                     },
                     {
                         path: 'edit',
                         element: <Edit />,
-                        action: editAction
-                    }
+                        action: editContactAction
+                    },
                 ]
             }
         ]

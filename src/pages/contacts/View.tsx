@@ -1,5 +1,5 @@
 import { doc, getDoc } from "firebase/firestore/lite"
-import { Link, LoaderFunctionArgs, json, useLoaderData, useRouteLoaderData } from "react-router-dom"
+import { ActionFunctionArgs, Link, LoaderFunctionArgs, json, redirect, useLoaderData, useParams, useRouteLoaderData, useSubmit } from "react-router-dom"
 
 import { db } from "../../db/firebase"
 import { generateProfilePhoto } from "../../utils"
@@ -9,11 +9,25 @@ import { ReactComponent as Envelope } from '../../assets/svgs/envelope.svg'
 import { ReactComponent as QrCode } from '../../assets/svgs/qr-code.svg'
 import Jumbotron from "../../components/Jumbotron"
 import contactsService from "../../lib/firebase"
+import { useState } from "react"
 
 const View = () => {
+    const { id } = useParams()
     const contact = useRouteLoaderData('get-contact') as Contact
+    const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
+    const submit = useSubmit()
 
     const profilePhotoURL = generateProfilePhoto(contact.firstName, contact.lastName)
+
+    const deleteConfirmationHandler = () => setShowDeleteConfirmation(prevState => !prevState)
+
+    const deleteHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+
+        submit(
+            null, {
+            method: 'post',
+        })
+    }
 
     return <div className="container py-10 space-y-4">
         <Link to="edit" className="fixed top-4 right-4 text-blue-500 transition duration-200 hover:text-blue-700">Edit</Link>
@@ -64,9 +78,20 @@ const View = () => {
             <p>{contact.notes ?? 'N/A'}</p>
         </Jumbotron>
 
-        <Jumbotron as="button" className="w-full !text-red-500 !font-medium text-left">
-            <p>Delete this contact</p>
+        <Jumbotron as="button" className="w-full !text-red-500 !font-medium text-left" onClick={deleteConfirmationHandler}>
+            Delete this contact
         </Jumbotron>
+
+        {
+            showDeleteConfirmation && <div className="w-3/4 sm:w-1/2 mx-auto grid grid-cols-2 gap-6">
+                <Jumbotron as="button" className="w-full !bg-red-500 !text-white !font-medium text-center" onClick={deleteHandler}>
+                    Confirm!
+                </Jumbotron>
+                <Jumbotron as="button" className="w-full !text-red-500 !font-medium text-center" onClick={deleteConfirmationHandler}>
+                    Cancel
+                </Jumbotron>
+            </div>
+        }
     </div>
 }
 
@@ -80,4 +105,12 @@ export async function loader({ params }: LoaderFunctionArgs) {
     }
 
     return json(docSnap.data(), { status: 200 })
+}
+
+export async function action({ request, params }: ActionFunctionArgs) {
+    const id = params.id!
+
+    await contactsService.deleteContact(id)
+
+    return redirect('/')
 }

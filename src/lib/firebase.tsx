@@ -1,4 +1,4 @@
-import { addDoc, collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore/lite"
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, setDoc } from "firebase/firestore/lite"
 import { Contact } from "../types"
 import { db } from "../db/firebase"
 
@@ -39,11 +39,16 @@ const updateContact = async (contact: Contact) => {
         await setDoc(doc(db, 'contacts', id), contact)
 }
 
+const deleteContact = async (id: string) => {
+    await deleteDoc(doc(db, 'contacts', id))
+}
+
 const contactsService = {
     fetchContacts,
     fetchContact,
     createContact,
-    updateContact
+    updateContact,
+    deleteContact
 }
 
 export default contactsService
