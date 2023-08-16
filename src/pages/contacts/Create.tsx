@@ -108,5 +108,5 @@ export async function action({ request }: ActionFunctionArgs) {
 
     console.log('Contact added with ID: ' + contact.id)
 
-    return redirect(`/${contact.id}/edit`)
+    return redirect(`/${contact.id}`)
 }

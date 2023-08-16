@@ -6,10 +6,6 @@ import contactService from '../../lib/firebase'
 
 export const getContacts = () => {
     return async (dispatch: AppDispatch) => {
-        const contactsList = await contactService.fetchContacts()
-
-        dispatch(setContacts({
-            contacts: contactsList
-        }))
+        const contactsList = await contactService.fetchContacts(dispatch)
     }
 }

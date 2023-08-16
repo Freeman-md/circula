@@ -5,6 +5,7 @@ import ContactsSidebar from '../components/ContactsSidebar';
 import { getContacts } from '../store/contacts/contactsActions';
 import { useAppDispatch } from '../hooks/useReduxHooks';
 import { ReactComponent as Hamburger } from '../assets/svgs/bars-2.svg'
+import contactsService from '../lib/firebase';
 
 const DefaultLayout = () => {
     const dispatch = useAppDispatch()
