@@ -2,6 +2,9 @@ import useInput from "../../hooks/useInput"
 import { Contact } from "../../types"
 import { ActionFunctionArgs, Form, redirect, useNavigation, useRouteLoaderData } from "react-router-dom"
 import contactsService from "../../lib/firebase"
+import { store } from "../../store"
+import { showSnackbar } from "../../store/snackbar/snackbarActions"
+import { SnackbarTypes } from "../../store/snackbar/snackbarSlice"
 
 const Edit = () => {
     const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -99,7 +102,10 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
     await contactsService.updateContact(contactData)
 
-    console.log('Contact updated with ID: ' + contactData.id)
+    store.dispatch(showSnackbar({
+        type: SnackbarTypes.Success,
+        content: 'Contact updated successfully!'
+    }))
 
     return redirect(`/${contactId}`)
 }

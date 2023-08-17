@@ -2,12 +2,19 @@ import useInput from "../../hooks/useInput"
 import { Contact } from "../../types"
 import { ActionFunctionArgs, Form, redirect, useNavigation } from "react-router-dom"
 import contactsService from "../../lib/firebase"
+import { useAppDispatch } from "../../hooks/useReduxHooks"
+import { showSnackbar } from "../../store/snackbar/snackbarActions"
+import { SnackbarTypes } from "../../store/snackbar/snackbarSlice"
+import { store } from "../../store"
 
 const Create = () => {
     const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     const phoneRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/
 
     const navigation = useNavigation()
+    const dispatch = useAppDispatch()
+
+    
 
     const isFormSubmitting = navigation.state === 'submitting'
 
@@ -106,7 +113,10 @@ export async function action({ request }: ActionFunctionArgs) {
 
     const contact = await contactsService.createContact(contactData)
 
-    console.log('Contact added with ID: ' + contact.id)
+    store.dispatch(showSnackbar({
+        type: SnackbarTypes.Success,
+        content: 'Contact created successfully!'
+    }))
 
     return redirect(`/${contact.id}`)
 }

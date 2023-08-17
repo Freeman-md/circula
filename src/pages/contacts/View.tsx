@@ -1,7 +1,6 @@
-import { doc, getDoc } from "firebase/firestore/lite"
-import { ActionFunctionArgs, Link, LoaderFunctionArgs, json, redirect, useLoaderData, useParams, useRouteLoaderData, useSubmit } from "react-router-dom"
+import { ActionFunctionArgs, Link, LoaderFunctionArgs, json, redirect, useRouteLoaderData, useSubmit } from "react-router-dom"
+import { useState } from "react"
 
-import { db } from "../../db/firebase"
 import { generateProfilePhoto } from "../../utils"
 import { Contact } from "../../types"
 import { ReactComponent as Phone } from '../../assets/svgs/phone.svg'
@@ -9,10 +8,8 @@ import { ReactComponent as Envelope } from '../../assets/svgs/envelope.svg'
 import { ReactComponent as QrCode } from '../../assets/svgs/qr-code.svg'
 import Jumbotron from "../../components/Jumbotron"
 import contactsService from "../../lib/firebase"
-import { useState } from "react"
 
 const View = () => {
-    const { id } = useParams()
     const contact = useRouteLoaderData('get-contact') as Contact
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
     const submit = useSubmit()
@@ -30,7 +27,7 @@ const View = () => {
     }
 
     return <div className="container py-10 space-y-4">
-        <Link to="edit" className="fixed top-4 right-4 text-blue-500 transition duration-200 hover:text-blue-700">Edit</Link>
+        <Link to="edit" className="fixed z-10 top-4 right-4 text-blue-500 transition duration-200 hover:text-blue-700">Edit</Link>
 
         <div className="flex flex-col space-y-2 items-center justify-center">
             <div className="h-20 w-20 rounded-full bg-gray-200 bg-cover bg-center" style={{

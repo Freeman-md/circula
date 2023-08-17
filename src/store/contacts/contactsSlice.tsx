@@ -15,8 +15,8 @@ const contactsSlice = createSlice({
     name: 'contacts',
     initialState,
     reducers: {
-        setContacts: (state, action: PayloadAction<ContactsState>) => {
-            state.contacts = action.payload.contacts
+        setContacts: (state, { payload, type }: { payload: ContactsState, type: string }) => {
+            state.contacts = payload.contacts
         }
     }
 })
