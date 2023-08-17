@@ -1,3 +1,5 @@
+import { motion } from "framer-motion"
+
 import { ReactComponent as CheckCircle } from '../assets/svgs/check-circle.svg'
 import { ReactComponent as InformationCircle } from '../assets/svgs/information-circle.svg'
 import { ReactComponent as XCircle } from '../assets/svgs/x-circle.svg'
@@ -38,10 +40,13 @@ const Snackbar = () => {
     return <>{
         snackbarType && snackbarContent &&
         <div className='right-4 top-4 fixed z-50'>
-            <div className={snackbarContainerClasses}>
+            <motion.div initial={{ x: 104 }}
+                animate={{ x: 0 }}
+                transition={{ duration: 0.5, type: 'spring', bounce: 0.5 }} 
+                className={snackbarContainerClasses}>
                 {snackbarIcon}
                 <p>{snackbarContent}</p>
-            </div>
+            </motion.div>
         </div>
     }</>
 }

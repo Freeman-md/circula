@@ -8,6 +8,9 @@ import { ReactComponent as Envelope } from '../../assets/svgs/envelope.svg'
 import { ReactComponent as QrCode } from '../../assets/svgs/qr-code.svg'
 import Jumbotron from "../../components/Jumbotron"
 import contactsService from "../../lib/firebase"
+import { store } from "../../store"
+import { showSnackbar } from "../../store/snackbar/snackbarActions"
+import { SnackbarTypes } from "../../store/snackbar/snackbarSlice"
 
 const View = () => {
     const contact = useRouteLoaderData('get-contact') as Contact
@@ -108,6 +111,11 @@ export async function action({ request, params }: ActionFunctionArgs) {
     const id = params.id!
 
     await contactsService.deleteContact(id)
+
+    store.dispatch(showSnackbar({
+        type: SnackbarTypes.Success,
+        content: 'Contact deleted successfully!'
+    }))
 
     return redirect('/')
 }
