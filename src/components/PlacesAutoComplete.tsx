@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef } from 'react'
 import { useScript } from 'usehooks-ts'
 
 
-const AddressAutoComplete = ({ value, onChange, name = 'address' } : { value?: string, name: string, onChange: Function }) => {
+const PlacesAutoComplete = ({ value, name, onChange, types = [] } : { value?: string, name: string, onChange: Function, types?: Array<string> }) => {
     const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY
 
     const scriptStatus = useScript(`https://maps.googleapis.com/maps/api/js?language=en&key=${apiKey}&libraries=places`)
@@ -13,8 +13,9 @@ const AddressAutoComplete = ({ value, onChange, name = 'address' } : { value?: s
     const options = useMemo(
         () => ({
             fields: ["name"],
+            types
         }),
-        []
+        [types]
     )
 
     useEffect(() => {
@@ -51,7 +52,7 @@ const AddressAutoComplete = ({ value, onChange, name = 'address' } : { value?: s
         })
     }, [scriptStatus, options, onChange])
 
-    return <input ref={inputRef} placeholder='' name={name} value={value} />
+    return <input ref={inputRef} placeholder='' name={name} defaultValue={value} />
 }
 
-export default AddressAutoComplete
+export default PlacesAutoComplete

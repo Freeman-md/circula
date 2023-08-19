@@ -5,7 +5,7 @@ import contactsService from "../../lib/firebase"
 import { showSnackbar } from "../../store/snackbar/snackbarActions"
 import { SnackbarTypes } from "../../store/snackbar/snackbarSlice"
 import { store } from "../../store"
-import AddressAutoComplete from '../../components/AddressAutoComplete'
+import PlacesAutoComplete from '../../components/PlacesAutoComplete'
 
 const Create = () => {
     const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -57,13 +57,17 @@ const Create = () => {
 
             <div className="form-control col-span-2">
                 <label htmlFor="company">Company / Organization</label>
-                <input type="text" name="company" id="company" value={company.value} onChange={companyOnChangeHandler} />
-                {!company.isValid && company.error && <small className="text-red-500">{company.error}</small>}
+                <PlacesAutoComplete name="company" value={company.value} onChange={companyOnChangeHandler} types={['establishment']} />
+                {
+                    !company.isValid && company.error
+                        ? <small className="text-red-500">{company.error}</small>
+                        : <small>Powered by Google</small>
+                }
             </div>
 
             <div className="form-control col-span-2">
                 <label htmlFor="address">Address</label>
-                <AddressAutoComplete name="address" value={address.value} onChange={addressOnChangeHandler} />
+                <PlacesAutoComplete name="address" value={address.value} onChange={addressOnChangeHandler} />
                 {
                     !address.isValid && address.error
                         ? <small className="text-red-500">{address.error}</small>
