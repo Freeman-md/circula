@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import contactsSlice from './contacts/contactsSlice'
-import snackbarSlice from './snackbar/snackbarSlice'
+import uiSlice from './ui/uiSlice'
 
 export const store = configureStore({
     reducer: {
         contacts: contactsSlice.reducer,
-        snackbar: snackbarSlice.reducer
+        ui: uiSlice.reducer
     }
 })
 

@@ -4,8 +4,8 @@ import { CountryCode } from 'libphonenumber-js/types';
 import useInput from "../../hooks/useInput"
 import { Contact } from "../../types"
 import contactsService from "../../lib/firebase"
-import { showSnackbar } from "../../store/snackbar/snackbarActions"
-import { SnackbarTypes } from "../../store/snackbar/snackbarSlice"
+import { showSnackbar } from "../../store/ui/uiActions"
+import { SnackbarTypes } from "../../store/ui/uiSlice"
 import { store } from "../../store"
 import PlacesAutoComplete from '../../components/PlacesAutoComplete'
 import PhoneNumberInput from "../../components/PhoneNumberInput"

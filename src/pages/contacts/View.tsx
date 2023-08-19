@@ -9,8 +9,8 @@ import { ReactComponent as QrCode } from '../../assets/svgs/qr-code.svg'
 import Jumbotron from "../../components/Jumbotron"
 import contactsService from "../../lib/firebase"
 import { store } from "../../store"
-import { showSnackbar } from "../../store/snackbar/snackbarActions"
-import { SnackbarTypes } from "../../store/snackbar/snackbarSlice"
+import { showSnackbar } from "../../store/ui/uiActions"
+import { SnackbarTypes } from "../../store/ui/uiSlice"
 
 const View = () => {
     const contact = useRouteLoaderData('get-contact') as Contact
