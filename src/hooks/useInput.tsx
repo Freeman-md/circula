@@ -54,7 +54,7 @@ const useInput = (defaultValue: string = '', validationLogic: Function = (value:
     const valueOnChangeHandler = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         dispatch({
             type: 'INPUT',
-            payload: e.target.value
+            payload: typeof e === "string" ? e : e.target.value
         })
     }
 

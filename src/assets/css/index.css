@@ -22,6 +22,10 @@ code {
   @apply flex items-center space-x-2 bg-secondary text-white px-4 py-1.5 rounded transition duration-200 focus:outline-none focus:border-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary disabled:bg-opacity-50;
 }
 
+.btn-sm {
+  @apply !px-2 !py-0.5 !text-sm
+}
+
 .form-control label {
   @apply block mb-2 text-lg;
 }

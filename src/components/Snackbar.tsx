@@ -1,4 +1,4 @@
-import { motion } from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion"
 
 import { ReactComponent as CheckCircle } from '../assets/svgs/check-circle.svg'
 import { ReactComponent as InformationCircle } from '../assets/svgs/information-circle.svg'
@@ -42,6 +42,7 @@ const Snackbar = () => {
         <div className='right-4 top-4 fixed z-50'>
             <motion.div initial={{ x: 104 }}
                 animate={{ x: 0 }}
+                exit={{ x: 104 }}
                 transition={{ duration: 0.5, type: 'spring', bounce: 0.5 }} 
                 className={snackbarContainerClasses}>
                 {snackbarIcon}

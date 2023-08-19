@@ -5,6 +5,7 @@ import contactsService from "../../lib/firebase"
 import { store } from "../../store"
 import { showSnackbar } from "../../store/snackbar/snackbarActions"
 import { SnackbarTypes } from "../../store/snackbar/snackbarSlice"
+import AddressAutoComplete from "../../components/AddressAutoComplete"
 
 const Edit = () => {
     const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -63,8 +64,12 @@ const Edit = () => {
 
             <div className="form-control col-span-2">
                 <label htmlFor="address">Address</label>
-                <input type="text" name="address" id="address" value={address.value} onChange={addressOnChangeHandler} />
-                {!address.isValid && address.error && <small className="text-red-500">{address.error}</small>}
+                <AddressAutoComplete name="address" value={address.value} onChange={addressOnChangeHandler} />
+                {
+                    !address.isValid && address.error
+                        ? <small className="text-red-500">{address.error}</small>
+                        : <small>Powered by Google</small>
+                }
             </div>
 
             <div className="form-control col-span-2">

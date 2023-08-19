@@ -2,41 +2,28 @@ import useInput from "../../hooks/useInput"
 import { Contact } from "../../types"
 import { ActionFunctionArgs, Form, redirect, useNavigation } from "react-router-dom"
 import contactsService from "../../lib/firebase"
-import { useAppDispatch } from "../../hooks/useReduxHooks"
 import { showSnackbar } from "../../store/snackbar/snackbarActions"
 import { SnackbarTypes } from "../../store/snackbar/snackbarSlice"
 import { store } from "../../store"
+import AddressAutoComplete from '../../components/AddressAutoComplete'
 
 const Create = () => {
     const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     const phoneRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/
 
     const navigation = useNavigation()
-    const dispatch = useAppDispatch()
-
-    
 
     const isFormSubmitting = navigation.state === 'submitting'
 
-    const { state: firstName, valueOnChangeHandler: firstNameOnChangeHandler, clearInput: clearFirstNameInput } = useInput('', (value: string) => value.length !== 0, 'Please enter a first name', true)
-    const { state: lastName, valueOnChangeHandler: lastNameOnChangeHandler, clearInput: clearLastNameInput } = useInput('', (value: string) => value.length !== 0, 'Please enter a last name', true)
-    const { state: email, valueOnChangeHandler: emailOnChangeHandler, clearInput: clearEmailInput } = useInput('', (value: string) => emailRegex.test(value), 'Please enter a valid email address', true)
-    const { state: phone, valueOnChangeHandler: phoneOnChangeHandler, clearInput: clearPhoneInput } = useInput('', (value: string) => phoneRegex.test(value), 'Please enter a valid phone number', true)
-    const { state: company, valueOnChangeHandler: companyOnChangeHandler, clearInput: clearCompanyInput } = useInput()
-    const { state: address, valueOnChangeHandler: addressOnChangeHandler, clearInput: clearAddressInput } = useInput()
-    const { state: notes, valueOnChangeHandler: notesOnChangeHandler, clearInput: clearNotesInput } = useInput()
+    const { state: firstName, valueOnChangeHandler: firstNameOnChangeHandler } = useInput('', (value: string) => value.length !== 0, 'Please enter a first name', true)
+    const { state: lastName, valueOnChangeHandler: lastNameOnChangeHandler } = useInput('', (value: string) => value.length !== 0, 'Please enter a last name', true)
+    const { state: email, valueOnChangeHandler: emailOnChangeHandler } = useInput('', (value: string) => emailRegex.test(value), 'Please enter a valid email address', true)
+    const { state: phone, valueOnChangeHandler: phoneOnChangeHandler } = useInput('', (value: string) => phoneRegex.test(value), 'Please enter a valid phone number', true)
+    const { state: company, valueOnChangeHandler: companyOnChangeHandler } = useInput()
+    const { state: address, valueOnChangeHandler: addressOnChangeHandler } = useInput()
+    const { state: notes, valueOnChangeHandler: notesOnChangeHandler } = useInput()
 
     const formIsValid: boolean = firstName.isValid && lastName.isValid && email.isValid && phone.isValid && company.isValid && address.isValid && notes.isValid
-
-    const clearInputs = () => {
-        clearFirstNameInput()
-        clearLastNameInput()
-        clearEmailInput()
-        clearPhoneInput()
-        clearCompanyInput()
-        clearAddressInput()
-        clearNotesInput()
-    }
 
 
     return <div className="py-10 container space-y-6">
@@ -76,9 +63,14 @@ const Create = () => {
 
             <div className="form-control col-span-2">
                 <label htmlFor="address">Address</label>
-                <input type="text" name="address" id="address" value={address.value} onChange={addressOnChangeHandler} />
-                {!address.isValid && address.error && <small className="text-red-500">{address.error}</small>}
+                <AddressAutoComplete name="address" value={address.value} onChange={addressOnChangeHandler} />
+                {
+                    !address.isValid && address.error
+                        ? <small className="text-red-500">{address.error}</small>
+                        : <small>Powered by Google</small>
+                }
             </div>
+
 
             <div className="form-control col-span-2">
                 <label htmlFor="notes">Notes</label>
@@ -88,7 +80,7 @@ const Create = () => {
 
             <div className="col-span-2 pt-4">
                 <button disabled={!formIsValid || isFormSubmitting} className="btn">
-                    { !isFormSubmitting ? 'Create' : 'Submitting...' }
+                    {!isFormSubmitting ? 'Create' : 'Submitting...'}
                 </button>
             </div>
 

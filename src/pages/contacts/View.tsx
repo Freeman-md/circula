@@ -65,17 +65,17 @@ const View = () => {
 
         <Jumbotron>
             <p className="text-sm">Address</p>
-            <p>{contact.address ?? 'N/A'}</p>
+            <p>{contact.address || 'N/A'}</p>
         </Jumbotron>
 
         <Jumbotron>
             <p className="text-sm">Company</p>
-            <p>{contact.company ?? 'N/A'}</p>
+            <p>{contact.company || 'N/A'}</p>
         </Jumbotron>
 
         <Jumbotron>
             <p className="text-sm">Notes</p>
-            <p>{contact.notes ?? 'N/A'}</p>
+            <p>{contact.notes || 'N/A'}</p>
         </Jumbotron>
 
         <Jumbotron as="button" className="w-full !text-red-500 !font-medium text-left" onClick={deleteConfirmationHandler}>

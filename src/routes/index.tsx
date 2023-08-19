@@ -13,7 +13,7 @@ const router = createBrowserRouter([
         children: [
             {
                 path: '/',
-                element: <Home />
+                element: <Home />,
             },
             {
                 path: '/create',
@@ -28,12 +28,12 @@ const router = createBrowserRouter([
                     {
                         index: true,
                         element: <View />,
-                        action: deleteContactAction
+                        action: deleteContactAction,
                     },
                     {
                         path: 'edit',
                         element: <Edit />,
-                        action: editContactAction
+                        action: editContactAction,
                     },
                 ]
             }
