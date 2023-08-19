@@ -1,11 +1,14 @@
+import { ActionFunctionArgs, Form, redirect, useNavigation, useRouteLoaderData } from "react-router-dom"
+import { CountryCode } from 'libphonenumber-js/types';
+
 import useInput from "../../hooks/useInput"
 import { Contact } from "../../types"
-import { ActionFunctionArgs, Form, redirect, useNavigation, useRouteLoaderData } from "react-router-dom"
 import contactsService from "../../lib/firebase"
 import { store } from "../../store"
 import { showSnackbar } from "../../store/snackbar/snackbarActions"
 import { SnackbarTypes } from "../../store/snackbar/snackbarSlice"
 import PlacesAutoComplete from "../../components/PlacesAutoComplete"
+import PhoneNumberInput from "../../components/PhoneNumberInput"
 
 const Edit = () => {
     const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -17,13 +20,13 @@ const Edit = () => {
 
     const isFormSubmitting = navigation.state === 'submitting'
 
-    const { state: firstName, valueOnChangeHandler: firstNameOnChangeHandler } = useInput(contact.firstName, (value: string) => value.length !== 0, 'Please enter a first name', true)
-    const { state: lastName, valueOnChangeHandler: lastNameOnChangeHandler } = useInput(contact.lastName, (value: string) => value.length !== 0, 'Please enter a last name', true)
-    const { state: email, valueOnChangeHandler: emailOnChangeHandler } = useInput(contact.email, (value: string) => emailRegex.test(value), 'Please enter a valid email address', true)
+    const { state: firstName, eventOnChangeHandler: firstNameOnChangeHandler } = useInput(contact.firstName, (value: string) => value.length !== 0, 'Please enter a first name', true)
+    const { state: lastName, eventOnChangeHandler: lastNameOnChangeHandler } = useInput(contact.lastName, (value: string) => value.length !== 0, 'Please enter a last name', true)
+    const { state: email, eventOnChangeHandler: emailOnChangeHandler } = useInput(contact.email, (value: string) => emailRegex.test(value), 'Please enter a valid email address', true)
     const { state: phone, valueOnChangeHandler: phoneOnChangeHandler } = useInput(contact.phone, (value: string) => phoneRegex.test(value), 'Please enter a valid phone number', true)
     const { state: company, valueOnChangeHandler: companyOnChangeHandler } = useInput(contact.company)
     const { state: address, valueOnChangeHandler: addressOnChangeHandler } = useInput(contact.address)
-    const { state: notes, valueOnChangeHandler: notesOnChangeHandler } = useInput(contact.notes)
+    const { state: notes, eventOnChangeHandler: notesOnChangeHandler } = useInput(contact.notes)
 
     const formIsValid: boolean = firstName.isValid && lastName.isValid && email.isValid && phone.isValid && company.isValid && address.isValid && notes.isValid
 
@@ -52,7 +55,7 @@ const Edit = () => {
 
             <div className="form-control">
                 <label htmlFor="phone">Phone number <span className="text-red-500">*</span></label>
-                <input type="text" name="phone" id="phone" value={phone.value} onChange={phoneOnChangeHandler} />
+                <PhoneNumberInput countryCode={contact.countryCode} value={phone.value} onChange={phoneOnChangeHandler} />
                 {!phone.isValid && phone.error && <small className="text-red-500">{phone.error}</small>}
             </div>
 
@@ -103,6 +106,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
         firstName: data.get('first_name')?.toString() ?? '',
         lastName: data.get('last_name')?.toString() ?? '',
         email: data.get('email')?.toString() ?? '',
+        countryCode: (data.get('country-code')?.toString() ?? '') as CountryCode,
         phone: data.get('phone')?.toString() ?? '',
         company: data.get('company')?.toString() ?? '',
         address: data.get('address')?.toString() ?? '',

@@ -1,4 +1,5 @@
 import { ChangeEvent, useReducer, useEffect } from "react"
+import { E164Number } from 'libphonenumber-js/types';
 
 interface InputState {
     value: string,
@@ -10,7 +11,10 @@ interface InputAction {
     payload: string,
 }
 
-const useInput = (defaultValue: string = '', validationLogic: Function = (value: string) => value.length !== 0, errorMessage: string = 'Invalid input', required: boolean = false,) => {
+type ValueChangeHandler = (value: string | E164Number) => void; // Common type for value change handlers
+type EventChangeHandler = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void; // Event handler type
+
+const useInput = (defaultValue: string = '', validationLogic: Function = (value: string) => value.length !== 0, errorMessage: string = 'Invalid input', required: boolean = false) => {
     const initialInputState: InputState = {
         value: defaultValue,
         error: '',
@@ -43,7 +47,7 @@ const useInput = (defaultValue: string = '', validationLogic: Function = (value:
     const [value, dispatch] = useReducer(inputReducer, initialInputState)
 
     useEffect(() => {
-        if (!defaultValue) return 
+        if (!defaultValue) return
 
         dispatch({
             type: 'INPUT',
@@ -51,12 +55,19 @@ const useInput = (defaultValue: string = '', validationLogic: Function = (value:
         })
     }, [defaultValue])
 
-    const valueOnChangeHandler = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const eventOnChangeHandler: EventChangeHandler = (e) => {
         dispatch({
             type: 'INPUT',
-            payload: typeof e === "string" ? e : e.target.value
+            payload: e.target.value
         })
     }
+
+    const valueOnChangeHandler: ValueChangeHandler = (value) => {
+        dispatch({
+            type: 'INPUT',
+            payload: value
+        })
+      };
 
     const clearInput = () => dispatch({
         type: 'INPUT',
@@ -64,6 +75,7 @@ const useInput = (defaultValue: string = '', validationLogic: Function = (value:
     })
 
     return {
+        eventOnChangeHandler,
         valueOnChangeHandler,
         clearInput,
         state: value, // state object with properties value, isValid, and error
