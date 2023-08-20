@@ -39,7 +39,7 @@ const Snackbar = () => {
 
     return <>{
         snackbarType && snackbarContent &&
-        <div className='right-4 top-4 fixed z-50'>
+        <div className='right-4 top-4 fixed z-40'>
             <motion.div initial={{ x: 104 }}
                 animate={{ x: 0 }}
                 exit={{ x: 104 }}

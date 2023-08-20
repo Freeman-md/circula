@@ -10,12 +10,15 @@ import Jumbotron from "../../components/Jumbotron"
 import contactsService from "../../lib/firebase"
 import { store } from "../../store"
 import { showSnackbar } from "../../store/ui/uiActions"
-import { SnackbarTypes } from "../../store/ui/uiSlice"
+import { SnackbarTypes, toggleModal } from "../../store/ui/uiSlice"
+import { useAppDispatch } from "../../hooks/useReduxHooks"
 
 const View = () => {
     const contact = useRouteLoaderData('get-contact') as Contact
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
     const submit = useSubmit()
+
+    const dispatch = useAppDispatch()
 
     const profilePhotoURL = generateProfilePhoto(contact.firstName, contact.lastName)
 
@@ -27,6 +30,10 @@ const View = () => {
             null, {
             method: 'post',
         })
+    }
+
+    const openModalHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+        dispatch(toggleModal())
     }
 
     return <div className="container py-10 space-y-4">
@@ -52,7 +59,7 @@ const View = () => {
                 <p className="text-sm px-2">Mail</p>
             </a>
 
-            <button className="px-6 py-2 flex flex-col items-center justify-center space-y-1 transition duration-200 bg-secondary/10 rounded-lg hover:bg-primary hover:text-white mr-10">
+            <button onClick={openModalHandler} className="px-6 py-2 flex flex-col items-center justify-center space-y-1 transition duration-200 bg-secondary/10 rounded-lg hover:bg-primary hover:text-white mr-10">
                 <QrCode className="w-6" />
                 <p className="text-sm px-2">Share</p>
             </button>

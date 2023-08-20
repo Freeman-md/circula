@@ -20,11 +20,11 @@ const DefaultLayout = () => {
         setIsSidebarOpen(prevState => !prevState)
     }
 
-    let sidebarClasses: string = 'fixed z-50 md:static md:w-1/4 md:block h-screen bg-white shadow'
+    let sidebarClasses: string = 'fixed z-30 md:static md:w-1/4 md:block h-screen bg-white shadow'
 
 
     return <div className='flex h-screen overflow-hidden relative'>
-        <button onClick={toggleSidebarHandler} className='fixed z-40 right-4 bottom-4 w-10 h-10 rounded-full flex items-center justify-center bg-secondary/20 transition duration-200 hover:bg-secondary/30'>
+        <button onClick={toggleSidebarHandler} className='fixed z-20 right-4 bottom-4 w-10 h-10 rounded-full flex items-center justify-center bg-secondary/20 transition duration-200 hover:bg-secondary/30'>
             <Hamburger />
         </button>
 

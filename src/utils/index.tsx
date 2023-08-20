@@ -1,10 +1,10 @@
 import { Contact, GroupedContacts } from "../types";
 
-export function generateProfilePhoto(firstName: string, lastName?: string) {
+export function generateProfilePhoto(firstName: string, lastName?: string): string {
   return `https://ui-avatars.com/api/?name=${firstName.substring(0, 1)}+${lastName?.substring(0, 1)}&color=FFFFFF&background=455A64`
 }
 
-export function groupAndSortContactsByFirstLetter(contacts: Contact[]) {
+export function groupAndSortContactsByFirstLetter(contacts: Contact[]): GroupedContacts {
   const groupedContacts: GroupedContacts = {};
 
   contacts.forEach(contact => {
@@ -32,4 +32,11 @@ export function isObjectEmpty(obj: object): boolean {
     }
   }
   return true;
+}
+
+export function createWrapperAndAppendToBody(wrapperId: string): HTMLElement {
+  const wrapperElement = document.createElement('div');
+  wrapperElement.setAttribute("id", wrapperId);
+  document.body.appendChild(wrapperElement);
+  return wrapperElement;
 }
