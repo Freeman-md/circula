@@ -12,7 +12,8 @@ interface UIState {
         content: string,
     },
     modal: {
-        show: boolean
+        show: boolean,
+        qrcodeValue: string
     }
 }
 
@@ -22,7 +23,8 @@ const initialState: UIState = {
         content: ''
     },
     modal: {
-        show: false
+        show: false,
+        qrcodeValue: '',
     }
 }
 
@@ -38,9 +40,10 @@ const uiSlice = createSlice({
             state.snackbar.type = SnackbarTypes.Success
             state.snackbar.content = ''
         },
-        toggleModal(state) {
-            console.log('toggling modal', state.modal.show)
+        toggleModal(state, { payload }) {
             state.modal.show = !state.modal.show
+            state.modal.qrcodeValue = payload.modal.qrcodeValue ?? ''
+
         }
     }
 })

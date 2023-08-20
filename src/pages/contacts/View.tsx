@@ -1,4 +1,4 @@
-import { ActionFunctionArgs, Link, LoaderFunctionArgs, json, redirect, useRouteLoaderData, useSubmit } from "react-router-dom"
+import { ActionFunctionArgs, Link, redirect, useRouteLoaderData, useSubmit } from "react-router-dom"
 import { useState } from "react"
 
 import { generateProfilePhoto } from "../../utils"
@@ -33,7 +33,11 @@ const View = () => {
     }
 
     const openModalHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
-        dispatch(toggleModal())
+        dispatch(toggleModal({
+            modal: {
+                qrcodeValue: `${window.location.origin}/share/${contact.id}`
+            }
+        }))
     }
 
     return <div className="container py-10 space-y-4">
@@ -103,16 +107,6 @@ const View = () => {
 }
 
 export default View
-
-export async function loader({ params }: LoaderFunctionArgs) {
-    const docSnap = await contactsService.fetchContact(params.id!)
-
-    if (!docSnap.exists()) {
-        throw json({ message: "Contact information not found" }, { status: 404 })
-    }
-
-    return json(docSnap.data(), { status: 200 })
-}
 
 export async function action({ request, params }: ActionFunctionArgs) {
     const id = params.id!

@@ -3,8 +3,10 @@ import DefaultLayout from '../layouts/default'
 import Home from '../pages/Home'
 import Create, { action as createAction } from '../pages/contacts/Create'
 import ErrorPage from '../pages/Error'
-import View, { loader as getContactLoader, action as deleteContactAction } from '../pages/contacts/View'
+import View, { action as deleteContactAction } from '../pages/contacts/View'
 import Edit, { action as editContactAction } from '../pages/contacts/Edit'
+import Share from '../pages/contacts/Share'
+import { getContactLoader } from '../utils/route-loaders'
 
 const router = createBrowserRouter([
     {
@@ -38,6 +40,12 @@ const router = createBrowserRouter([
                 ]
             }
         ]
+    },
+    {
+        loader: getContactLoader,
+        path: '/share/:id',
+        element: <Share />,
+        
     }
 ])
 
