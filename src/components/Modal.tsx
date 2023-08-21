@@ -1,12 +1,14 @@
-import { useEffect, useCallback } from 'react'
-import { useAppDispatch, useAppSelector } from '../hooks/useReduxHooks';
+import { useEffect, useCallback, ReactNode } from 'react'
 import { motion } from "framer-motion";
-import QRCode from 'qrcode.react';
 
-
-import { toggleModal } from '../store/ui/uiSlice';
 import ReactPortal from './ReactPortal';
 import { ReactComponent as XCircle } from '../assets/svgs/x-circle.svg'
+
+interface ModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    children: ReactNode;
+  }
 
 const dropIn = {
     hidden: {
@@ -29,24 +31,14 @@ const dropIn = {
     },
 };
 
-const Modal = () => {
-    const dispatch = useAppDispatch()
-    const isModalOpen = useAppSelector(state => state.ui.modal.show)
-    const qrcodeValue = useAppSelector(state => state.ui.modal.qrcodeValue)
 
+const Modal : React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
     const closeModalHandler = useCallback(
         () => {
-            dispatch(
-                toggleModal({
-                    modal: {
-                        qrcodeValue: ''
-                    }
-                })
-            )
+           onClose()
         },
-        [dispatch],
+        [onClose],
     )
-
 
     useEffect(() => {
         const closeOnEscapeKey = (e: KeyboardEvent) => e.key === "Escape" ? closeModalHandler() : null;
@@ -56,7 +48,7 @@ const Modal = () => {
         };
     }, [closeModalHandler]);
 
-    if (!isModalOpen) return null;
+    if (!isOpen) return null;
 
     return (
         <ReactPortal wrapperId='overlay-root'>
@@ -74,10 +66,9 @@ const Modal = () => {
                     >
                         <XCircle strokeWidth={2} className='w-6' />
                     </button>
-                    <div className='flex flex-col justify-center items-center pb-4'>
-                        <h2 className="text-2xl font-semibold mb-4 text-center">Scan QR Code</h2>
-                        <QRCode value={qrcodeValue} size={400} />
-                    </div>
+
+                    {/* Modal Content goes here */}
+                    { children }
                 </motion.div>
             </motion.div>
         </ReactPortal>

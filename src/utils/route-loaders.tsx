@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs, json } from "react-router-dom"
-import contactsService from "../lib/firebase"
+import contactsService from "../lib/contact-service"
 
 export async function getContactLoader({ params }: LoaderFunctionArgs) {
     const docSnap = await contactsService.fetchContact(params.id!)

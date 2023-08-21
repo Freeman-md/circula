@@ -1,5 +1,5 @@
 import { AppDispatch } from '..';
-import contactService from '../../lib/firebase'
+import contactService from '../../lib/contact-service'
 
 
 export const getContacts = () => {
