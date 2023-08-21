@@ -1,9 +1,9 @@
 import { AppDispatch } from '..';
-import contactService from '../../lib/contact-service'
+import contactService from '../../lib/contacts-service'
 
 
 export const getContacts = () => {
-    return async (dispatch: AppDispatch) => {
-        await contactService.fetchContacts(dispatch)
+    return (dispatch: AppDispatch) => {
+        contactService.fetchContacts(dispatch)
     }
 }

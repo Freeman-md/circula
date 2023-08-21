@@ -8,7 +8,7 @@ import { ReactComponent as Phone } from '../../assets/svgs/phone.svg'
 import { ReactComponent as Envelope } from '../../assets/svgs/envelope.svg'
 import { ReactComponent as QrCode } from '../../assets/svgs/qr-code.svg'
 import Jumbotron from "../../components/Jumbotron"
-import contactsService from "../../lib/contact-service"
+import contactsService from "../../lib/contacts-service"
 import { store } from "../../store"
 import { showSnackbar } from "../../store/ui/uiActions"
 import { SnackbarTypes } from "../../store/ui/uiSlice"
@@ -18,7 +18,7 @@ import Modal from "../../components/Modal"
 const View = () => {
     const contact = useRouteLoaderData('get-contact') as Contact
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
-    const [isModalOpen, setIsModalOpen] =  useState<boolean>(false)
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
     const submit = useSubmit()
     const dispatch = useAppDispatch()
 

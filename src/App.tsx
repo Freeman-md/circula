@@ -13,8 +13,6 @@ const App = () => {
 
   // get contacts
   useEffect(() => {
-    dispatch(getContacts())
-
     // set up hook to listen for auth changes
     onAuthStateChanged(auth, user => {
       if (user) {
@@ -27,6 +25,8 @@ const App = () => {
             photoURL: user.photoURL
           }
         }))
+
+        dispatch(getContacts())
       } else {
         // no one's logged in
         dispatch(

@@ -9,8 +9,6 @@ interface ProtectedRouteProps {
 const ProtectedRoute = ({ children } : ProtectedRouteProps) => {
     const user = useAppSelector(state => state.user.user)
 
-    console.log(user)
-
     if (!user) return <Guest />
 
     return <>

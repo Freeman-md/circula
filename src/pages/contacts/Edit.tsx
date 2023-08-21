@@ -3,7 +3,7 @@ import { CountryCode } from 'libphonenumber-js/types';
 
 import useInput from "../../hooks/useInput"
 import { Contact } from "../../types"
-import contactsService from "../../lib/contact-service"
+import contactsService from "../../lib/contacts-service"
 import { store } from "../../store"
 import { showSnackbar } from "../../store/ui/uiActions"
 import { SnackbarTypes } from "../../store/ui/uiSlice"

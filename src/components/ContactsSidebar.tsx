@@ -21,13 +21,13 @@ const ContactsSidebar = ({ classes = 'h-screen w-1/4' }: Props) => {
         setFilteredContacts(() =>
             groupAndSortContactsByFirstLetter(
                 contacts
-                    .filter(contact => contact.firstName.toLowerCase().includes(searchText) || contact.lastName.toLowerCase().includes(searchText))
+                    .filter(contact => contact?.firstName.toLowerCase().includes(searchText) || contact?.lastName.toLowerCase().includes(searchText))
             )
         )
     }, [searchText, contacts])
 
     const onSearchTextChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setSearchText(e.target.value.toLowerCase().trim())
+        setSearchText(e.target.value?.toLowerCase().trim())
     }
 
     return <div className={[classes, 'space-y-4 pt-6 pb-2'].join(' ')}>
