@@ -11,6 +11,13 @@ export interface Contact {
     notes: string
 }
 
+export interface User {
+    uid: string,
+    displayName: string,
+    email: string,
+    photoURL: string,
+}
+
 export interface GroupedContacts {
     [key: string]: Contact[]
 }

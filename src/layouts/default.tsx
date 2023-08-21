@@ -1,24 +1,18 @@
 import { Outlet } from 'react-router-dom'
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import ContactsSidebar from '../components/ContactsSidebar';
-import { getContacts } from '../store/contacts/contactsActions';
-import { useAppDispatch } from '../hooks/useReduxHooks';
 import { ReactComponent as Hamburger } from '../assets/svgs/bars-2.svg'
 import { ReactComponent as UserCircle } from '../assets/svgs/user-circle.svg'
+import { ReactComponent as GoogleIcon } from '../assets/svgs/google-icon.svg'
 import Snackbar from '../components/Snackbar';
 import Modal from '../components/Modal';
-import { ui, uiConfig } from '../lib/auth';
+import { signInWithGoogle } from '../lib/auth';
 
 
 const DefaultLayout = () => {
-    const dispatch = useAppDispatch()
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
-
-    useEffect(() => {
-        dispatch(getContacts())
-    }, [dispatch])
 
     const toggleSidebarHandler = () => {
         setIsSidebarOpen(prevState => !prevState)
@@ -26,11 +20,7 @@ const DefaultLayout = () => {
 
     const toggleModalHandler = async () => {
         // open modal
-        await setIsModalOpen(prevState => !prevState)
-
-        if (!isModalOpen) {
-            ui.start('#firebaseui-auth-container', uiConfig)
-        }
+        setIsModalOpen(prevState => !prevState)
     }
 
     let sidebarClasses: string = 'fixed z-30 md:static md:w-1/4 md:block h-screen bg-white shadow'
@@ -57,9 +47,10 @@ const DefaultLayout = () => {
             <div className='flex flex-col justify-center items-center pb-4'>
                 <h2 className="text-2xl font-semibold mb-4 text-center">Sign in</h2>
 
-                <div id='firebaseui-auth-container'>
-
-                </div>
+                <button className='flex items-center justify-center py-3 px-5 space-x-2 rounded border' onClick={signInWithGoogle}> 
+                    <GoogleIcon className='w-8' />
+                    <span>Sign in with Google</span>
+                </button>
             </div>
         </Modal>
     </div>
