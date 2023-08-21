@@ -5,6 +5,7 @@ import { ReactComponent as InformationCircle } from '../assets/svgs/information-
 import { ReactComponent as XCircle } from '../assets/svgs/x-circle.svg'
 import { useAppSelector } from '../hooks/useReduxHooks'
 import { SnackbarTypes } from '../store/ui/uiSlice'
+import ReactPortal from "./ReactPortal"
 
 const Snackbar = () => {
     let snackbarContainerClasses: string = 'bg-white px-4 py-2.5 rounded border border-b-2 flex space-x-4 items-center justify-center'
@@ -29,15 +30,16 @@ const Snackbar = () => {
             break;
     }
 
-    const snackbarIcon = snackbarType === SnackbarTypes.Error
-        ? <XCircle className={snackbarIconClasses} />
-        : snackbarType === SnackbarTypes.Success
-            ? <CheckCircle className={snackbarIconClasses} />
-            : snackbarType === SnackbarTypes.Warning
-                ? <InformationCircle className={snackbarIconClasses} />
-                : <></>
+    const snackbarIconMap = {
+        [SnackbarTypes.Error]: <XCircle className={snackbarIconClasses} />,
+        [SnackbarTypes.Success]: <CheckCircle className={snackbarIconClasses} />,
+        [SnackbarTypes.Warning]: <InformationCircle className={snackbarIconClasses} />,
+    };
 
-    return <>{
+    const snackbarIcon = snackbarIconMap[snackbarType] || <></>;
+
+
+    return <ReactPortal wrapperId="snackbar-root">{
         snackbarType && snackbarContent &&
         <div className='right-4 top-4 fixed z-40'>
             <motion.div initial={{ x: 104 }}
@@ -49,7 +51,8 @@ const Snackbar = () => {
                 <p>{snackbarContent}</p>
             </motion.div>
         </div>
-    }</>
+    }</ReactPortal>
+
 }
 
 export default Snackbar

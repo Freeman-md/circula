@@ -4,12 +4,16 @@ import { useState } from 'react';
 import ContactsSidebar from '../components/ContactsSidebar';
 import { ReactComponent as Hamburger } from '../assets/svgs/bars-2.svg'
 import { ReactComponent as SignOut } from '../assets/svgs/arrow-right-on-rectangle.svg'
-import Snackbar from '../components/Snackbar';
-import { useAppSelector } from '../hooks/useReduxHooks';
+import { useAppDispatch, useAppSelector } from '../hooks/useReduxHooks';
 import { generateProfilePhoto } from '../utils';
+import { signOut } from 'firebase/auth';
+import { auth } from '../lib/auth';
+import { showSnackbar } from '../store/ui/uiActions';
+import { SnackbarTypes } from '../store/ui/uiSlice';
 
 
 const DefaultLayout = () => {
+    const dispatch = useAppDispatch()
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
     const user = useAppSelector(state => state.user.user)
 
@@ -19,6 +23,15 @@ const DefaultLayout = () => {
 
     const toggleSidebarHandler = () => {
         setIsSidebarOpen(prevState => !prevState)
+    }
+
+    const logoutHandler = () => {
+        signOut(auth)
+
+        dispatch(showSnackbar({
+            type: SnackbarTypes.Success,
+            content: 'Logged out successfully!'
+        }))
     }
 
     let sidebarClasses: string = 'fixed z-30 md:static md:w-1/4 md:block h-screen bg-white shadow'
@@ -33,7 +46,7 @@ const DefaultLayout = () => {
             <img className='w-8 h-8 rounded-full' src={profilePhotoUrl} alt={user?.displayName} />
             <span>Welcome, <strong>{user?.displayName}</strong></span>
 
-            <button title='Logout' className='w-10 h-10 rounded-full flex items-center justify-center bg-secondary/20 transition duration-200 hover:bg-secondary/30'>
+            <button onClick={logoutHandler} title='Logout' className='w-10 h-10 rounded-full flex items-center justify-center bg-secondary/20 transition duration-200 hover:bg-secondary/30'>
                 <SignOut />
             </button>
         </div>
@@ -43,8 +56,6 @@ const DefaultLayout = () => {
         <main className='w-full md:w-3/4 h-screen overflow-scroll container'>
             <Outlet />
         </main>
-
-        <Snackbar />
     </div>
 }
 
