@@ -19,16 +19,16 @@ const App = () => {
     onAuthStateChanged(auth, user => {
       if (user) {
         // user logged in
-
         dispatch(setUser({
-          id: user.uid,
-          displayName: user.displayName,
-          email: user.email,
-          photoURL: user.photoURL
+          user: {
+            id: user.uid,
+            displayName: user.displayName,
+            email: user.email,
+            photoURL: user.photoURL
+          }
         }))
       } else {
         // no one's logged in
-        
         dispatch(
           resetUser()
         )

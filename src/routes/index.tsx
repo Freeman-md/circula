@@ -7,10 +7,13 @@ import View, { action as deleteContactAction } from '../pages/contacts/View'
 import Edit, { action as editContactAction } from '../pages/contacts/Edit'
 import Share from '../pages/contacts/Share'
 import { getContactLoader } from '../utils/route-loaders'
+import ProtectedRoute from '../components/ProtectedRoute'
 
 const router = createBrowserRouter([
     {
-        element: <DefaultLayout />,
+        element: <ProtectedRoute>
+            <DefaultLayout />
+        </ProtectedRoute>,
         errorElement: <ErrorPage />,
         children: [
             {

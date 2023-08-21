@@ -3,24 +3,22 @@ import { useState } from 'react';
 
 import ContactsSidebar from '../components/ContactsSidebar';
 import { ReactComponent as Hamburger } from '../assets/svgs/bars-2.svg'
-import { ReactComponent as UserCircle } from '../assets/svgs/user-circle.svg'
-import { ReactComponent as GoogleIcon } from '../assets/svgs/google-icon.svg'
+import { ReactComponent as SignOut } from '../assets/svgs/arrow-right-on-rectangle.svg'
 import Snackbar from '../components/Snackbar';
-import Modal from '../components/Modal';
-import { signInWithGoogle } from '../lib/auth';
+import { useAppSelector } from '../hooks/useReduxHooks';
+import { generateProfilePhoto } from '../utils';
 
 
 const DefaultLayout = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+    const user = useAppSelector(state => state.user.user)
+
+    const [ firstName, lastName ] = user ? user?.displayName.split(' ') : []
+
+    const profilePhotoUrl = user?.photoURL || generateProfilePhoto(firstName, lastName)
 
     const toggleSidebarHandler = () => {
         setIsSidebarOpen(prevState => !prevState)
-    }
-
-    const toggleModalHandler = async () => {
-        // open modal
-        setIsModalOpen(prevState => !prevState)
     }
 
     let sidebarClasses: string = 'fixed z-30 md:static md:w-1/4 md:block h-screen bg-white shadow'
@@ -31,9 +29,14 @@ const DefaultLayout = () => {
             <Hamburger />
         </button>
 
-        <button onClick={toggleModalHandler} className='fixed z-20 right-4 top-4 w-10 h-10 rounded-full flex items-center justify-center transition duration-200 text-gray-500 hover:text-black'>
-            <UserCircle />
-        </button>
+        <div className='fixed z-20 right-4 top-4 flex items-center justify-center space-x-4'>
+            <img className='w-8 h-8 rounded-full' src={profilePhotoUrl} alt={user?.displayName} />
+            <span>Welcome, <strong>{user?.displayName}</strong></span>
+
+            <button title='Logout' className='w-10 h-10 rounded-full flex items-center justify-center bg-secondary/20 transition duration-200 hover:bg-secondary/30'>
+                <SignOut />
+            </button>
+        </div>
 
         <ContactsSidebar classes={sidebarClasses} />
 
@@ -42,17 +45,6 @@ const DefaultLayout = () => {
         </main>
 
         <Snackbar />
-
-        <Modal isOpen={isModalOpen} onClose={toggleModalHandler}>
-            <div className='flex flex-col justify-center items-center pb-4'>
-                <h2 className="text-2xl font-semibold mb-4 text-center">Sign in</h2>
-
-                <button className='flex items-center justify-center py-3 px-5 space-x-2 rounded border' onClick={signInWithGoogle}> 
-                    <GoogleIcon className='w-8' />
-                    <span>Sign in with Google</span>
-                </button>
-            </div>
-        </Modal>
     </div>
 }
 
