@@ -1,68 +1,75 @@
-import { addDoc, collection, deleteDoc, doc, getDoc, query, setDoc, onSnapshot, QuerySnapshot } from "firebase/firestore"
-import { Contact } from "../types"
-import { db } from "../db/firebase"
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  query,
+  setDoc,
+  onSnapshot,
+  QuerySnapshot,
+} from "firebase/firestore";
+import { Contact } from "../types";
+import { db } from "../db/firebase";
 import { AppDispatch } from "../store";
 import { setContacts } from "../store/contacts/contactsSlice";
 import { auth } from "./auth";
 
-const authUserId = auth.currentUser?.uid
-const collectionPath = `users/${authUserId}/contacts`
+class ContactsService {
+  static collectionPath = "";
 
-const fetchContacts = (dispatch: AppDispatch) => {
-  // get contacts realtime
-  const q = query(collection(db, collectionPath));
+  static getCollectionPath() {
+    const authUserId = auth.currentUser?.uid;
+    return `users/${authUserId}/contacts`;
+  }
 
-  const unsubscribe = onSnapshot(q, (querySnapshot: QuerySnapshot) => {
-    const contacts: Contact[] = [];
+  static fetchContacts(dispatch: AppDispatch) {
+    this.collectionPath = this.getCollectionPath();
+    const q = query(collection(db, this.collectionPath));
 
-    querySnapshot.forEach((doc) => {
-      contacts.push({
-        id: doc.id,
-        ...doc.data() as Contact
-      });
-    });
+    const unsubscribe = onSnapshot(
+      q,
+      (querySnapshot: QuerySnapshot) => {
+        const contacts: Contact[] = [];
 
-    dispatch(setContacts({
-      contacts
-    }))
-  });
+        querySnapshot.forEach((doc) => {
+          contacts.push({
+            id: doc.id,
+            ...doc.data() as Contact,
+          });
+        });
 
-  return unsubscribe;
+        dispatch(setContacts({ contacts }));
+      }
+    );
 
-};
+    return unsubscribe;
+  }
 
+  static async fetchContact(id: string) {
+    this.collectionPath = this.getCollectionPath();
+    const docRef = doc(db, this.collectionPath, id);
+    
+    return await getDoc(docRef);
+  }
 
-const fetchContact = async (id: string) => {
-  const docRef = doc(db, collectionPath, id)
+  static async createContact(contact: Contact) {
+    this.collectionPath = this.getCollectionPath();
+    const docRef = await addDoc(collection(db, this.collectionPath), contact);
 
-  return await getDoc(docRef) // returns the contact object
+    return docRef;
+  }
+
+  static async updateContact(contact: Contact) {
+    this.collectionPath = this.getCollectionPath();
+    const id = contact.id!;
+    await setDoc(doc(db, this.collectionPath, id), contact);
+  }
+
+  static async deleteContact(id: string) {
+    this.collectionPath = this.getCollectionPath();
+    await deleteDoc(doc(db, this.collectionPath, id));
+  }
 }
 
-const createContact = async (contact: Contact) => {
-  // send request to firebase cloud firestore to add contact
-  const docRef = await addDoc(collection(db, collectionPath), contact)
-
-  return docRef
-}
-
-const updateContact = async (contact: Contact) => {
-  // use non-null assertion operator ('!') to enforce id is not undefined
-  const id = contact.id!
-
-  // send request to firebase cloud firestore to update contact
-  await setDoc(doc(db, collectionPath, id), contact)
-}
-
-const deleteContact = async (id: string) => {
-  await deleteDoc(doc(db, collectionPath, id))
-}
-
-const contactsService = {
-  fetchContacts,
-  fetchContact,
-  createContact,
-  updateContact,
-  deleteContact
-}
-
-export default contactsService
+export default ContactsService;

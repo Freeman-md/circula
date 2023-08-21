@@ -8,12 +8,12 @@ import { ReactComponent as Phone } from '../../assets/svgs/phone.svg'
 import { ReactComponent as Envelope } from '../../assets/svgs/envelope.svg'
 import { ReactComponent as QrCode } from '../../assets/svgs/qr-code.svg'
 import Jumbotron from "../../components/Jumbotron"
-import contactsService from "../../lib/contacts-service"
+import Modal from "../../components/Modal"
 import { store } from "../../store"
 import { showSnackbar } from "../../store/ui/uiActions"
 import { SnackbarTypes } from "../../store/ui/uiSlice"
 import { useAppDispatch } from "../../hooks/useReduxHooks"
-import Modal from "../../components/Modal"
+import ContactsService from "../../lib/contacts-service";
 
 const View = () => {
     const contact = useRouteLoaderData('get-contact') as Contact
@@ -118,7 +118,7 @@ export default View
 export async function action({ request, params }: ActionFunctionArgs) {
     const id = params.id!
 
-    await contactsService.deleteContact(id)
+    await ContactsService.deleteContact(id)
 
     store.dispatch(showSnackbar({
         type: SnackbarTypes.Success,

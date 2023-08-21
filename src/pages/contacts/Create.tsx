@@ -3,12 +3,12 @@ import { CountryCode } from 'libphonenumber-js/types';
 
 import useInput from "../../hooks/useInput"
 import { Contact } from "../../types"
-import contactsService from "../../lib/contacts-service"
 import { showSnackbar } from "../../store/ui/uiActions"
 import { SnackbarTypes } from "../../store/ui/uiSlice"
 import { store } from "../../store"
 import PlacesAutoComplete from '../../components/PlacesAutoComplete'
 import PhoneNumberInput from "../../components/PhoneNumberInput"
+import ContactsService from "../../lib/contacts-service";
 
 const Create = () => {
     const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -111,7 +111,7 @@ export async function action({ request }: ActionFunctionArgs) {
         notes: data.get('notes')?.toString() ?? ''
     }
 
-    const contact = await contactsService.createContact(contactData)
+    const contact = await ContactsService.createContact(contactData)
 
     store.dispatch(showSnackbar({
         type: SnackbarTypes.Success,
