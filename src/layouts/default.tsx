@@ -42,7 +42,7 @@ const DefaultLayout = () => {
             <Hamburger />
         </button>
 
-        <div className='fixed z-20 right-4 top-4 flex items-center justify-center space-x-4'>
+        <div className='fixed z-20 right-4 top-4 flex items-center justify-center space-x-4 filter bg-white/30 backdrop-blur-md p-1'>
             <img className='w-8 h-8 rounded-full' src={profilePhotoUrl} alt={user?.displayName} />
             <span>Welcome, <strong>{user?.displayName}</strong></span>
 

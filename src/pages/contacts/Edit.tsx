@@ -1,4 +1,4 @@
-import { ActionFunctionArgs, Form, redirect, useNavigation, useRouteLoaderData } from "react-router-dom"
+import { ActionFunctionArgs, Form, json, redirect, useNavigation, useRouteLoaderData } from "react-router-dom"
 import { CountryCode } from 'libphonenumber-js/types';
 
 import useInput from "../../hooks/useInput"
@@ -113,12 +113,21 @@ export async function action({ request, params }: ActionFunctionArgs) {
         notes: data.get('notes')?.toString() ?? ''
     }
 
-    await ContactsService.updateContact(contactData)
+    try {
+        await ContactsService.updateContact(contactData)
 
-    store.dispatch(showSnackbar({
-        type: SnackbarTypes.Success,
-        content: 'Contact updated successfully!'
-    }))
+        store.dispatch(showSnackbar({
+            type: SnackbarTypes.Success,
+            content: 'Contact updated successfully!'
+        }))
+    
+        return redirect(`/${contactId}`)
+    } catch (error: any) {
+        store.dispatch(showSnackbar({
+            type: SnackbarTypes.Error,
+            content: 'An error has occurred'
+        }))
 
-    return redirect(`/${contactId}`)
+        throw json({ message: error.message })
+    }
 }

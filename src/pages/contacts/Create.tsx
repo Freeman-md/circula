@@ -1,4 +1,4 @@
-import { ActionFunctionArgs, Form, redirect, useNavigation } from "react-router-dom"
+import { ActionFunctionArgs, Form, json, redirect, useNavigation } from "react-router-dom"
 import { CountryCode } from 'libphonenumber-js/types';
 
 import useInput from "../../hooks/useInput"
@@ -111,12 +111,21 @@ export async function action({ request }: ActionFunctionArgs) {
         notes: data.get('notes')?.toString() ?? ''
     }
 
-    const contact = await ContactsService.createContact(contactData)
+    try {
+        const contact = await ContactsService.createContact(contactData)
 
-    store.dispatch(showSnackbar({
-        type: SnackbarTypes.Success,
-        content: 'Contact created successfully!'
-    }))
+        store.dispatch(showSnackbar({
+            type: SnackbarTypes.Success,
+            content: 'Contact created successfully!'
+        }))
 
-    return redirect(`/${contact.id}`)
+        return redirect(`/${contact.id}`)
+    } catch (error: any) {
+        store.dispatch(showSnackbar({
+            type: SnackbarTypes.Error,
+            content: 'An error has occurred'
+        }))
+
+        throw json({ message: error.message })
+    }
 }

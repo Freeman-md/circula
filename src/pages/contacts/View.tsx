@@ -1,4 +1,4 @@
-import { ActionFunctionArgs, Link, redirect, useRouteLoaderData, useSubmit } from "react-router-dom"
+import { ActionFunctionArgs, Link, json, redirect, useRouteLoaderData, useSubmit } from "react-router-dom"
 import { useState } from "react"
 import QRCode from 'qrcode.react';
 
@@ -12,7 +12,6 @@ import Modal from "../../components/Modal"
 import { store } from "../../store"
 import { showSnackbar } from "../../store/ui/uiActions"
 import { SnackbarTypes } from "../../store/ui/uiSlice"
-import { useAppDispatch } from "../../hooks/useReduxHooks"
 import ContactsService from "../../lib/contacts-service";
 
 const View = () => {
@@ -20,7 +19,6 @@ const View = () => {
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
     const submit = useSubmit()
-    const dispatch = useAppDispatch()
 
     const profilePhotoURL = generateProfilePhoto(contact.firstName, contact.lastName)
     const shareQrCodeValue = `${window.location.origin}/share/${contact.id}`
@@ -40,8 +38,8 @@ const View = () => {
     }
 
     return <>
-        <div className="container py-10 space-y-4">
-            <Link to="edit" className="fixed z-10 top-16 right-6 text-blue-500 transition duration-200 hover:text-blue-700">Edit</Link>
+        <div className="container py-10 space-y-4 relative">
+            <Link to="edit" className="absolute top-20 right-6 text-blue-500 transition duration-200 hover:text-blue-700">Edit</Link>
 
             <div className="flex flex-col space-y-2 items-center justify-center">
                 <div className="h-20 w-20 rounded-full bg-gray-200 bg-cover bg-center" style={{
@@ -118,12 +116,21 @@ export default View
 export async function action({ request, params }: ActionFunctionArgs) {
     const id = params.id!
 
-    await ContactsService.deleteContact(id)
+    try {
+        await ContactsService.deleteContact(id)
 
-    store.dispatch(showSnackbar({
-        type: SnackbarTypes.Success,
-        content: 'Contact deleted successfully!'
-    }))
+        store.dispatch(showSnackbar({
+            type: SnackbarTypes.Success,
+            content: 'Contact deleted successfully!'
+        }))
 
-    return redirect('/')
+        return redirect('/')
+    } catch (error: any) {
+        store.dispatch(showSnackbar({
+            type: SnackbarTypes.Error,
+            content: 'An error has occurred'
+        }))
+
+        throw json({ message: error.message })
+    }
 }
