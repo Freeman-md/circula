@@ -32,7 +32,7 @@ const Create = () => {
     return <div className="py-10 container space-y-6">
         <h1 className="text-3xl font-semibold text-secondary">Create contact</h1>
 
-        <Form method="post" className="grid grid-cols-2 gap-6 w-3/4">
+        <Form method="post" className="space-y-6 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-6 sm:w-3/4">
 
             <div className="form-control">
                 <label htmlFor="first_name">First name <span className="text-red-500">*</span></label>

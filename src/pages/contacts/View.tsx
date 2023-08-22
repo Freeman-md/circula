@@ -50,18 +50,18 @@ const View = () => {
                 </p>
             </div>
 
-            <div className="w-full flex flex-wrap items-center justify-center">
-                <a href={`tel:${contact.phone}`} className="px-6 py-2 flex flex-col items-center justify-center space-y-1 transition duration-200 bg-secondary/10 rounded-lg hover:bg-primary hover:text-white mr-10">
+            <div className="w-full flex flex-wrap items-center justify-center space-x-4">
+                <a href={`tel:${contact.phone}`} className="px-6 py-2 flex flex-col items-center justify-center space-y-1 transition duration-200 bg-secondary/10 rounded-lg hover:bg-primary hover:text-white mb-4">
                     <Phone className="w-6" />
                     <p className="text-sm px-2">Call</p>
                 </a>
 
-                <a href={`mailto:${contact.email}`} className="px-6 py-2 flex flex-col items-center justify-center space-y-1 transition duration-200 bg-secondary/10 rounded-lg hover:bg-primary hover:text-white mr-10">
+                <a href={`mailto:${contact.email}`} className="px-6 py-2 flex flex-col items-center justify-center space-y-1 transition duration-200 bg-secondary/10 rounded-lg hover:bg-primary hover:text-white mb-4">
                     <Envelope className="w-6" />
                     <p className="text-sm px-2">Mail</p>
                 </a>
 
-                <button onClick={toggleModalHandler} className="px-6 py-2 flex flex-col items-center justify-center space-y-1 transition duration-200 bg-secondary/10 rounded-lg hover:bg-primary hover:text-white mr-10">
+                <button onClick={toggleModalHandler} className="px-6 py-2 flex flex-col items-center justify-center space-y-1 transition duration-200 bg-secondary/10 rounded-lg hover:bg-primary hover:text-white mb-4">
                     <QrCode className="w-6" />
                     <p className="text-sm px-2">Share</p>
                 </button>

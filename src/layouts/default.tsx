@@ -16,8 +16,9 @@ const DefaultLayout = () => {
     const dispatch = useAppDispatch()
     const isSidebarOpen = useAppSelector(state => state.ui.sidebar.show)
     const user = useAppSelector(state => state.user.user)
+    
 
-    const [ firstName, lastName ] = user ? user?.displayName.split(' ') : []
+    const [firstName, lastName] = user ? user?.displayName.split(' ') : []
 
     const profilePhotoUrl = user?.photoURL || generateProfilePhoto(firstName, lastName)
 
@@ -25,9 +26,7 @@ const DefaultLayout = () => {
 
     !isSidebarOpen ? sidebarClasses += '-translate-x-full md:translate-x-0' : sidebarClasses += 'translate-x-0'
 
-    const toggleSidebarHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
-        event.stopPropagation(); // Prevent the click event from propagating to the window
-
+    const toggleSidebarHandler = () => {
         dispatch(toggleSidebar())
     }
 
@@ -39,22 +38,6 @@ const DefaultLayout = () => {
             content: 'Logged out successfully!'
         }))
     }
-
-    useEffect(() => {
-        const closeSidebarOnClickOutside = (event: MouseEvent) => {
-            const sidebarElement = document.querySelector('#contacts-sidebar');
-            
-            if (sidebarElement && !sidebarElement.contains(event.target as Node)) {
-                dispatch(toggleSidebar())
-            }
-        };
-
-        window.addEventListener('click', closeSidebarOnClickOutside);
-
-        return () => {
-            window.removeEventListener('click', closeSidebarOnClickOutside);
-        };
-    }, []);
 
     return <div className='flex h-screen overflow-hidden relative'>
         <button onClick={toggleSidebarHandler} className='md:hidden fixed z-20 right-4 bottom-4 w-10 h-10 rounded-full flex items-center justify-center bg-secondary/20 transition duration-200 hover:bg-secondary/30'>
@@ -72,15 +55,15 @@ const DefaultLayout = () => {
 
         <ContactsSidebar classes={sidebarClasses} />
 
-        <main className='w-full md:w-3/4 h-screen overflow-scroll container'>
+        <main className='w-full pt-10 md:w-3/4 h-screen overflow-scroll container'>
             <Outlet />
         </main>
 
         <footer className='fixed bottom-2 inset-x-0'>
             <p className='text-center text-sm'>
-            Designed & Developed by <a className='underline text-base font-medium' href="https://freemancodz.netlify.app">Freemancodz</a>
+                Designed & Developed by <a className='underline text-base font-medium' href="https://freemancodz.netlify.app">Freemancodz</a>
             </p>
-            </footer>
+        </footer>
     </div>
 }
 
