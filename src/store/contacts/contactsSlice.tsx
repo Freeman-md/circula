@@ -1,8 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
 import { Contact } from '../../types'
 
-interface ContactsState {
+type ContactsState = {
     contacts: Contact[]
 }
 

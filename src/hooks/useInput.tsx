@@ -1,12 +1,12 @@
 import { ChangeEvent, useReducer, useEffect } from "react"
 import { E164Number } from 'libphonenumber-js/types';
 
-interface InputState {
+type InputState = {
     value: string,
     error: string,
     isValid: boolean,
 }
-interface InputAction {
+type InputAction = {
     type: string,
     payload: string,
 }

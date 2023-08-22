@@ -1,12 +1,12 @@
 
-import { useState, useEffect, forwardRef } from 'react'
+import { useState, useEffect } from 'react'
 import { CountryCode, E164Number } from 'libphonenumber-js/types';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css'
 import CountrySelect from './CountrySelect';
 import { lookupCountry } from '../lib/phone-input';
 
-interface PhoneNumberInputProps {
+type PhoneNumberInputProps = {
     value?: E164Number,
     name?: string,
     onChange: (value: E164Number) => void,

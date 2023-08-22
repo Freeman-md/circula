@@ -1,13 +1,13 @@
-import React, { useState, useLayoutEffect, ReactNode, FC } from 'react';
+import { useState, useLayoutEffect, ReactNode, FC } from 'react';
 import { createPortal } from 'react-dom';
 import { createWrapperAndAppendToBody } from '../utils';
 
-interface ReactPortalProps {
+type ReactPortalProps = {
     children: ReactNode;
     wrapperId: string;
 }
 
-const ReactPortal: FC<ReactPortalProps> = ({ children, wrapperId }) => {
+const ReactPortal = ({ children, wrapperId } : ReactPortalProps) => {
     const [wrapperElement, setWrapperElement] = useState<HTMLElement | null>(null);
 
     useLayoutEffect(() => {

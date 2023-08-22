@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import ReactPortal from './ReactPortal';
 import { ReactComponent as XCircle } from '../assets/svgs/x-circle.svg'
 
-interface ModalProps {
+type ModalProps = { 
     isOpen: boolean;
     onClose: () => void;
     children: ReactNode;
@@ -32,7 +32,7 @@ const dropIn = {
 };
 
 
-const Modal : React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
+const Modal = ({ isOpen, onClose, children } : ModalProps) => {
     const closeModalHandler = useCallback(
         () => {
            onClose()

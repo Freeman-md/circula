@@ -1,5 +1,5 @@
 import { CountryCode } from 'libphonenumber-js/types';
-export interface Contact {
+export type Contact = {
     id?: string,
     firstName: string,
     lastName: string,
@@ -11,18 +11,18 @@ export interface Contact {
     notes: string
 }
 
-export interface User {
+export type User = {
     uid: string,
     displayName: string,
     email: string,
     photoURL: string,
 }
 
-export interface GroupedContacts {
+export type GroupedContacts = {
     [key: string]: Contact[]
 }
 
-export interface UseInputProps {
+export type UseInputProps = {
     defaultValue?: string, 
     validationLogic?: Function, 
     errorMessage?: string, 

@@ -6,7 +6,7 @@ enum SnackbarTypes {
     Warning = 'warning'
 }
 
-interface UIState {
+type UIState = {
     snackbar: {
         type: SnackbarTypes,
         content: string,

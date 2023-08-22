@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 
-interface JumbotronOwnProps<E extends React.ElementType = React.ElementType> {
+type JumbotronOwnProps<E extends React.ElementType = React.ElementType> = {
   children: React.ReactNode;
   as?: E;
   className?: string;

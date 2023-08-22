@@ -7,11 +7,11 @@ import { Contact, GroupedContacts } from '../types'
 import { groupAndSortContactsByFirstLetter } from '../utils'
 import { Link } from 'react-router-dom'
 
-interface Props {
+type ContactsSidebarProps = {
     classes?: string
 }
 
-const ContactsSidebar = ({ classes = 'h-screen w-1/4' }: Props) => {
+const ContactsSidebar = ({ classes = 'h-screen w-1/4' }: ContactsSidebarProps) => {
     const [searchText, setSearchText] = useState<string>('')
     const [filteredContacts, setFilteredContacts] = useState<GroupedContacts>({})
 

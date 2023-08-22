@@ -1,6 +1,6 @@
 import { ReactComponent as NoData } from '../assets/svgs/undraw-no-data.svg'
 
-interface EmptyProps {
+type EmptyProps = {
     message?: string | undefined;
     textColor?: string | undefined
 }

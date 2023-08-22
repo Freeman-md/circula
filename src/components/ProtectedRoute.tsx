@@ -2,7 +2,7 @@ import { ReactNode } from 'react'
 import { useAppSelector } from '../hooks/useReduxHooks'
 import Guest from './Guest'
 
-interface ProtectedRouteProps {
+type ProtectedRouteProps = {
     children: ReactNode
 }
 

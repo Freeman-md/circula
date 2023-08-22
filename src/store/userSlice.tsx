@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { User } from "../types";
 
-interface InitialState {
+type InitialState = {
     user: User | null,
     token: string | null,
 }
