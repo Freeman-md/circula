@@ -10,6 +10,9 @@ type UIState = {
     snackbar: {
         type: SnackbarTypes,
         content: string,
+    },
+    sidebar: {
+        show: boolean
     }
 }
 
@@ -17,6 +20,9 @@ const initialState: UIState = {
     snackbar: {
         type: SnackbarTypes.Success,
         content: ''
+    },
+    sidebar: {
+        show: false
     }
 }
 
@@ -31,11 +37,14 @@ const uiSlice = createSlice({
         clearSnackbar(state) {
             state.snackbar.type = SnackbarTypes.Success
             state.snackbar.content = ''
+        },
+        toggleSidebar(state) {
+            state.sidebar.show = !state.sidebar.show
         }
     }
 })
 
-export const { setSnackbar, clearSnackbar } = uiSlice.actions
+export const { setSnackbar, clearSnackbar, toggleSidebar } = uiSlice.actions
 
 export { SnackbarTypes }
 export default uiSlice

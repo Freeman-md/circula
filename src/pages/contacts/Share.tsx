@@ -11,7 +11,7 @@ const Share = () => {
 
     const profilePhotoURL = generateProfilePhoto(contact.firstName, contact.lastName)
 
-    return <div className="container py-10 space-y-4">
+    return <><div className="container py-10 space-y-4">
 
         <div className="flex flex-col space-y-2 items-center justify-center">
             <div className="h-20 w-20 rounded-full bg-gray-200 bg-cover bg-center" style={{
@@ -54,6 +54,13 @@ const Share = () => {
             <p>{contact.notes || 'N/A'}</p>
         </Jumbotron>
     </div>
+
+    <footer className='fixed bottom-2 inset-x-0'>
+            <p className='text-center text-sm'>
+            Designed & Developed by <a className='underline text-base font-medium' href="https://freemancodz.netlify.app">Freemancodz</a>
+            </p>
+            </footer>
+    </>
 }
 
 export default Share

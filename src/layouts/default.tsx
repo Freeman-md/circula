@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom'
-import { useState } from 'react';
+import { useEffect } from 'react';
 
 import ContactsSidebar from '../components/ContactsSidebar';
 import { ReactComponent as Hamburger } from '../assets/svgs/bars-2.svg'
@@ -9,20 +9,26 @@ import { generateProfilePhoto } from '../utils';
 import { signOut } from 'firebase/auth';
 import { auth } from '../lib/auth';
 import { showSnackbar } from '../store/ui/uiActions';
-import { SnackbarTypes } from '../store/ui/uiSlice';
+import { SnackbarTypes, toggleSidebar } from '../store/ui/uiSlice';
 
 
 const DefaultLayout = () => {
     const dispatch = useAppDispatch()
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+    const isSidebarOpen = useAppSelector(state => state.ui.sidebar.show)
     const user = useAppSelector(state => state.user.user)
 
     const [ firstName, lastName ] = user ? user?.displayName.split(' ') : []
 
     const profilePhotoUrl = user?.photoURL || generateProfilePhoto(firstName, lastName)
 
-    const toggleSidebarHandler = () => {
-        setIsSidebarOpen(prevState => !prevState)
+    let sidebarClasses: string = 'fixed z-30 md:w-1/4 md:block md:static h-screen bg-white shadow transition-transform duration-200 transform '
+
+    !isSidebarOpen ? sidebarClasses += '-translate-x-full md:translate-x-0' : sidebarClasses += 'translate-x-0'
+
+    const toggleSidebarHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.stopPropagation(); // Prevent the click event from propagating to the window
+
+        dispatch(toggleSidebar())
     }
 
     const logoutHandler = () => {
@@ -34,11 +40,24 @@ const DefaultLayout = () => {
         }))
     }
 
-    let sidebarClasses: string = 'fixed z-30 md:static md:w-1/4 md:block h-screen bg-white shadow'
+    useEffect(() => {
+        const closeSidebarOnClickOutside = (event: MouseEvent) => {
+            const sidebarElement = document.querySelector('#contacts-sidebar');
+            
+            if (sidebarElement && !sidebarElement.contains(event.target as Node)) {
+                dispatch(toggleSidebar())
+            }
+        };
 
+        window.addEventListener('click', closeSidebarOnClickOutside);
+
+        return () => {
+            window.removeEventListener('click', closeSidebarOnClickOutside);
+        };
+    }, []);
 
     return <div className='flex h-screen overflow-hidden relative'>
-        <button onClick={toggleSidebarHandler} className='fixed z-20 right-4 bottom-4 w-10 h-10 rounded-full flex items-center justify-center bg-secondary/20 transition duration-200 hover:bg-secondary/30'>
+        <button onClick={toggleSidebarHandler} className='md:hidden fixed z-20 right-4 bottom-4 w-10 h-10 rounded-full flex items-center justify-center bg-secondary/20 transition duration-200 hover:bg-secondary/30'>
             <Hamburger />
         </button>
 
@@ -56,6 +75,12 @@ const DefaultLayout = () => {
         <main className='w-full md:w-3/4 h-screen overflow-scroll container'>
             <Outlet />
         </main>
+
+        <footer className='fixed bottom-2 inset-x-0'>
+            <p className='text-center text-sm'>
+            Designed & Developed by <a className='underline text-base font-medium' href="https://freemancodz.netlify.app">Freemancodz</a>
+            </p>
+            </footer>
     </div>
 }
 

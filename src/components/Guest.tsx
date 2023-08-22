@@ -13,6 +13,12 @@ const Guest = () => {
                     <span>Sign in with Google</span>
                 </button>
         </div>
+
+        <footer className='fixed bottom-2 inset-x-0'>
+            <p className='text-center text-sm'>
+            Designed & Developed by <a className='underline text-base font-medium' href="https://freemancodz.netlify.app">Freemancodz</a>
+            </p>
+            </footer>
     </div>
 }
 
