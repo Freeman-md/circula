@@ -1,46 +1,67 @@
-# Getting Started with Create React App
+# Circula - A Modern Contact Manager
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Circula is a sophisticated contact manager built using React, TypeScript, and cutting-edge technologies like Redux, React Router, and React Hooks. It serves as a versatile tool for managing professional and casual connections, enabling seamless sharing of contact details using QR codes.
 
-## Available Scripts
 
-In the project directory, you can run:
+![Home Page](/public/images/home.png)
 
-### `npm start`
+## Motivation
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+The inspiration behind Circula came from a real-life scenario where the need to share contact information seamlessly arose. By creating this application, I aimed to provide users with a simple yet powerful solution to share their contact details, both publicly and privately.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Key Features
 
-### `npm test`
+- View, search, and sort contacts based on various criteria.
+- Group contacts for better organization.
+- View detailed contact information, including home and company addresses.
+- Perform actions such as copying contact details, calling, and emailing.
+- Cloud Firestore integration for reliable data storage and real-time updates.
+- Utilization of Google Places API for easy address input.
+- Support for phone numbers with country codes.
+- Integrated authentication for private access.
+- PWA functionality for offline access and usage.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+#### View Contact
+![View Contact](/public/images/view-contact.png)
 
-### `npm run build`
+## Technology Stack
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- React and TypeScript for building a modern user interface.
+- Redux for state management and handling complex interactions.
+- React Router for efficient navigation within the app.
+- React Hooks (useCallback, useMemo) for optimizing performance.
+- React Portal for creating a smooth user experience.
+- Cloud Firestore for data storage and real-time updates.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Installation and Usage
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Clone the repository.
+2. Navigate to the project directory and install dependencies using `npm install`.
+3. Run the app locally using `npm start`.
+4. Access the app through your browser at `http://localhost:3000`.
 
-### `npm run eject`
+## How to Use
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+1. Log in to access your personalized contact list.
+2. Add, edit, or delete contacts as needed.
+3. Group contacts and sort them by first name for better organization.
+5. Others can scan the QR code to instantly access the shared information.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Additional Features (Version 2)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- Enhanced sharing options: public and private fields.
+- Unlimited custom fields with various data types.
+- Secure personal contact information sharing.
+- Offline support
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Challenges and Learnings
 
-## Learn More
+During development, I encountered challenges with dispatching Redux actions from route actions and loaders. I successfully resolved this by utilizing the exported store object. Additionally, I faced minor difficulties in structuring files within directories, but I managed to overcome this obstacle.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Contribution Guidelines
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+If you're interested in contributing to Circula, please send me a message on twitter @ [Freemancodz](https://twitter.com/freemancodz). Your contributions are highly appreciated and will help make the project even better.
+
+## Video Demonstration
+
+Check out this short video to see Circula in action: [Video Demonstration](https://www.mediafire.com/file/mwochf11q11cdpw/Screen_Recording_2023-08-23_at_9.30.51_PM.mov/file)
