@@ -10,6 +10,7 @@ import { signOut } from 'firebase/auth';
 import { auth } from '../lib/auth';
 import { showSnackbar } from '../store/ui/uiActions';
 import { SnackbarTypes, toggleSidebar } from '../store/ui/uiSlice';
+import { resetUser } from '../store/userSlice';
 
 
 const DefaultLayout = () => {
@@ -33,6 +34,8 @@ const DefaultLayout = () => {
     const logoutHandler = () => {
         signOut(auth)
 
+        dispatch(resetUser())
+
         dispatch(showSnackbar({
             type: SnackbarTypes.Success,
             content: 'Logged out successfully!'
@@ -46,7 +49,7 @@ const DefaultLayout = () => {
 
         <div className='fixed z-20 right-4 top-4 flex items-center justify-center space-x-4 filter bg-white/30 backdrop-blur-md p-1'>
             <img className='w-8 h-8 rounded-full' src={profilePhotoUrl} alt={user?.displayName} />
-            <span>Welcome, <strong>{user?.displayName}</strong></span>
+            <span>Welcome, <strong>{user?.displayName || 'Visitor'}</strong></span>
 
             <button onClick={logoutHandler} title='Logout' className='w-10 h-10 rounded-full flex items-center justify-center bg-secondary/20 transition duration-200 hover:bg-secondary/30'>
                 <SignOut />

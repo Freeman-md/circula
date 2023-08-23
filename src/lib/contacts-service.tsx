@@ -20,6 +20,12 @@ class ContactsService {
 
   static getCollectionPath() {
     const authUserId = auth.currentUser?.uid;
+
+    // store contacts in shared collection if no user is available (visitor mode)
+    if (!authUserId) {
+      return 'contacts'
+    }
+
     return `users/${authUserId}/contacts`;
   }
 

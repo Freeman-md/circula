@@ -1,8 +1,16 @@
 import { ReactComponent as Logo } from "../assets/svgs/logo.svg"
 import { ReactComponent as GoogleIcon } from '../assets/svgs/google-icon.svg'
 import { signInWithGoogle } from "../lib/auth"
+import { useAppDispatch } from "../hooks/useReduxHooks"
+import { setModeToVisitor } from "../store/userSlice"
 
 const Guest = () => {
+    const dispatch = useAppDispatch()
+
+    const visitorModeHandler = async () => {
+        await dispatch(setModeToVisitor())
+    }
+
     return <div className="h-screen flex flex-col space-y-6 items-center justify-center">
         <Logo className="w-80" />
         <h2 className="text-2xl text-primary text-center">Elevate Your Contacts with Simplicity and Sophistication!</h2>
@@ -13,6 +21,8 @@ const Guest = () => {
                     <span>Sign in with Google</span>
                 </button>
         </div>
+
+        <button className="underline" onClick={visitorModeHandler}>Continue as a visitor</button>
 
         <footer className='fixed bottom-2 inset-x-0'>
             <p className='text-center text-sm'>

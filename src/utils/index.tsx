@@ -1,7 +1,7 @@
 import { Contact, GroupedContacts } from "../types";
 
-export function generateProfilePhoto(firstName: string, lastName?: string): string {
-  return `https://ui-avatars.com/api/?name=${firstName.substring(0, 1)}+${lastName?.substring(0, 1)}&color=FFFFFF&background=455A64`
+export function generateProfilePhoto(firstName?: string, lastName?: string): string {
+  return `https://ui-avatars.com/api/?name=${firstName?.substring(0, 1) || 'N'}+${lastName?.substring(0, 1) || 'A'}&color=FFFFFF&background=455A64`
 }
 
 export function groupAndSortContactsByFirstLetter(contacts: Contact[]): GroupedContacts {

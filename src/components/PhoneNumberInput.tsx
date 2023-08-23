@@ -19,8 +19,6 @@ const PhoneNumberInput = ({ value, name, onChange, countryCode = 'GB'} : PhoneNu
 
     const countryChangeHandler = (country: CountryCode) => {
         setCountry(prevState => {
-            console.log('changing country: ', prevState)
-
             return country
         })
     }

@@ -2,16 +2,19 @@ import { useEffect } from 'react';
 import { RouterProvider, json } from 'react-router-dom'
 
 import router from './routes';
-import { useAppDispatch } from './hooks/useReduxHooks';
+import { useAppDispatch, useAppSelector } from './hooks/useReduxHooks';
 import { getContacts } from './store/contacts/contactsActions';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './lib/auth';
-import { resetUser, setUser } from './store/userSlice';
+import { UsageModes, resetUser, setUser } from './store/userSlice';
 import { showSnackbar } from './store/ui/uiActions';
 import { SnackbarTypes } from './store/ui/uiSlice';
 
 const App = () => {
   const dispatch = useAppDispatch()
+  const usageMode = useAppSelector(state => state.user.mode)
+
+  if (usageMode === UsageModes.Neutral) dispatch(getContacts())
 
   // get contacts
   useEffect(() => {

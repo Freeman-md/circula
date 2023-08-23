@@ -13,7 +13,7 @@ type UIState = {
     },
     sidebar: {
         show: boolean
-    }
+    },
 }
 
 const initialState: UIState = {
