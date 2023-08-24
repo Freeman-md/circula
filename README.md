@@ -3,6 +3,8 @@
 Circula is a sophisticated contact manager built using React, TypeScript, and cutting-edge technologies like Redux, React Router, and React Hooks. It serves as a versatile tool for managing professional and casual connections, enabling seamless sharing of contact details using QR codes.
 
 
+🌐 **Experience It:** Explore the live app: [Circula Live](https://circula-e10ee.web.app/)
+
 ![Home Page](/public/images/home.png)
 
 ## Motivation
