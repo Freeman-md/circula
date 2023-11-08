@@ -119,7 +119,7 @@ export async function action({ request }: ActionFunctionArgs) {
             content: 'Contact created successfully!'
         }))
 
-        return redirect(`/${contact.id}`)
+        return redirect(`/${contact?.id}`)
     } catch (error: any) {
         store.dispatch(showSnackbar({
             type: SnackbarTypes.Error,

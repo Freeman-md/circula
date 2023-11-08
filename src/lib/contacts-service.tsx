@@ -9,7 +9,7 @@ import {
   onSnapshot,
   QuerySnapshot,
 } from "firebase/firestore";
-import { Contact } from "../types";
+import { Contact, ContactModel } from "../types";
 import { db } from "../db/firebase";
 import { AppDispatch } from "../store";
 import { setContacts } from "../store/contacts/contactsSlice";
@@ -61,7 +61,12 @@ class ContactsService {
 
   static async createContact(contact: Contact) {
     this.collectionPath = this.getCollectionPath();
-    const docRef = await addDoc(collection(db, this.collectionPath), contact);
+
+    // extract contact data without ID from newly created contact as ID is undefined
+    const { id, ...contactData } = (new ContactModel(contact)).toJSON()
+
+    // save new document to firebase which automatically creates an ID for the document
+    const docRef = await addDoc(collection(db, this.collectionPath), contactData);
 
     return docRef;
   }
