@@ -2,7 +2,7 @@ import { ActionFunctionArgs, Form, json, redirect, useNavigation, useRouteLoader
 import { CountryCode } from 'libphonenumber-js/types';
 
 import useInput from "../../hooks/useInput"
-import { Contact, IContact } from "../../types"
+import { Contact, ContactModel, IContact } from "../../types"
 import { store } from "../../store"
 import { showSnackbar } from "../../store/ui/uiActions"
 import { SnackbarTypes } from "../../store/ui/uiSlice"
@@ -114,7 +114,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     }
 
     try {
-        await ContactsService.updateContact(contactData)
+        await ContactsService.updateContact(ContactModel.fromJSON(contactData))
 
         store.dispatch(showSnackbar({
             type: SnackbarTypes.Success,

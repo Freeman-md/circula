@@ -59,7 +59,7 @@ class ContactsService {
     return await getDoc(docRef);
   }
 
-  static async createContact(contact: Contact) {
+  static async createContact(contact: IContact) {
     this.collectionPath = this.getCollectionPath();
 
     // extract contact data without ID from newly created contact as ID is undefined
@@ -71,7 +71,7 @@ class ContactsService {
     return docRef;
   }
 
-  static async updateContact(contact: Contact) {
+  static async updateContact(contact: IContact) {
     this.collectionPath = this.getCollectionPath();
     const id = contact.id!;
 

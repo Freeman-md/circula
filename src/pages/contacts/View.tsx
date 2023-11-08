@@ -3,7 +3,7 @@ import { useState } from "react"
 import QRCode from 'qrcode.react';
 
 import { generateProfilePhoto } from "../../utils"
-import { IContact } from "../../types"
+import { Contact, ContactModel, IContact } from "../../types"
 import { ReactComponent as Phone } from '../../assets/svgs/phone.svg'
 import { ReactComponent as Envelope } from '../../assets/svgs/envelope.svg'
 import { ReactComponent as QrCode } from '../../assets/svgs/qr-code.svg'
@@ -13,6 +13,7 @@ import { store } from "../../store"
 import { showSnackbar } from "../../store/ui/uiActions"
 import { SnackbarTypes } from "../../store/ui/uiSlice"
 import ContactsService from "../../lib/contacts-service";
+import ToggleButton from "../../components/ToggleButton";
 
 const View = () => {
     const contact = useRouteLoaderData('get-contact') as IContact
@@ -36,6 +37,18 @@ const View = () => {
     const toggleModalHandler = () => {
         setIsModalOpen(prevState => !prevState)
     }
+
+    const toggleFieldVisibility = async (value: boolean, property: keyof IContact) => {
+        // Check if the property is an object with a 'visibility' property
+        if (typeof contact[property] === 'object') {
+          // Type assertion to inform TypeScript about the property type
+          (contact[property] as { value: string; visibility: boolean }).visibility = value;
+        }
+
+        // update contact details
+        await ContactsService.updateContact(contact);
+      };
+      
 
     return <>
         <div className="container py-10 space-y-4 relative">
@@ -67,22 +80,25 @@ const View = () => {
                 </button>
             </div>
 
-            <Jumbotron as="a" href={`tel:${contact.phone}`}>
-                <p className="text-sm">Phone</p>
-                <p className="text-blue-500">{contact.phone.value}</p>
+            <Jumbotron as="a" href={`tel:${contact.phone}`} toggleButton={<ToggleButton initialVisibility={contact.phone.visibility} onToggle={(value) => toggleFieldVisibility(value, 'phone')} />}>
+                <div className="space-y-1.5">
+                    <p className="text-sm">Phone</p>
+                    <p className="text-blue-500">{contact.phone.value}</p>
+                </div>
             </Jumbotron>
 
-            <Jumbotron>
+
+            <Jumbotron toggleButton={<ToggleButton initialVisibility={contact.address.visibility} onToggle={(value) => toggleFieldVisibility(value, 'address')} />}>
                 <p className="text-sm">Address</p>
                 <p>{contact.address.value || 'N/A'}</p>
             </Jumbotron>
 
-            <Jumbotron>
+            <Jumbotron toggleButton={<ToggleButton initialVisibility={contact.company.visibility} onToggle={(value) => toggleFieldVisibility(value, 'company')} />}>
                 <p className="text-sm">Company</p>
                 <p>{contact.company.value || 'N/A'}</p>
             </Jumbotron>
 
-            <Jumbotron>
+            <Jumbotron toggleButton={<ToggleButton initialVisibility={contact.notes.visibility} onToggle={(value) => toggleFieldVisibility(value, 'notes')} />}>
                 <p className="text-sm">Notes</p>
                 <p>{contact.notes.value || 'N/A'}</p>
             </Jumbotron>

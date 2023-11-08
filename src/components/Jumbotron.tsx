@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 
 type JumbotronOwnProps<E extends React.ElementType = React.ElementType> = {
   children: React.ReactNode;
+  toggleButton?: React.ReactElement
   as?: E;
   className?: string;
 }
@@ -13,12 +14,13 @@ const __DEFAULT_ELEMENT__ = 'div';
 
 function Jumbotron<E extends React.ElementType = typeof __DEFAULT_ELEMENT__>({
   children,
+  toggleButton,
   as,
   className,
   ...props
 }: JumbotronProps<E>) {
   const Component = as || __DEFAULT_ELEMENT__;
-  const combinedClassName = `bg-secondary/10 py-2 px-4 rounded-lg space-y-1.5 block transition duration-200 hover:bg-secondary/20 focus:bg-secondary/20 ${className || ''}`;
+  const combinedClassName = `bg-secondary/10 py-2 px-4 rounded-lg flex space-x-4 items-end justify-between transition duration-200 hover:bg-secondary/20 focus:bg-secondary/20 ${className || ''}`;
 
   const contentRef = useRef(null);
   const [showCopiedMessage, setShowCopiedMessage] = useState(false);
@@ -43,6 +45,7 @@ function Jumbotron<E extends React.ElementType = typeof __DEFAULT_ELEMENT__>({
     <div
       ref={contentRef}
       onClick={handleCopy}
+      className='items-stretch w-full'
       style={{ cursor: 'pointer', position: 'relative' }}
     >
       {children}
@@ -60,9 +63,12 @@ function Jumbotron<E extends React.ElementType = typeof __DEFAULT_ELEMENT__>({
   );
 
   return (
-    <Component {...props} role="jumbotron" className={combinedClassName}>
-      {content}
-    </Component>
+    <div className={combinedClassName}>
+      <Component {...props} role="jumbotron">
+        {content}
+      </Component>
+      {toggleButton && toggleButton}
+    </div>
   );
 }
 

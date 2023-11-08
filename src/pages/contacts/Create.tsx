@@ -2,7 +2,7 @@ import { ActionFunctionArgs, Form, json, redirect, useNavigation } from "react-r
 import { CountryCode } from 'libphonenumber-js/types';
 
 import useInput from "../../hooks/useInput"
-import { Contact } from "../../types"
+import { Contact, ContactModel } from "../../types"
 import { showSnackbar } from "../../store/ui/uiActions"
 import { SnackbarTypes } from "../../store/ui/uiSlice"
 import { store } from "../../store"
@@ -112,7 +112,7 @@ export async function action({ request }: ActionFunctionArgs) {
     }
 
     try {
-        const contact = await ContactsService.createContact(contactData)
+        const contact = await ContactsService.createContact(ContactModel.fromJSON(contactData))
 
         store.dispatch(showSnackbar({
             type: SnackbarTypes.Success,

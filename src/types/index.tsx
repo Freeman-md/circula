@@ -83,40 +83,16 @@ export class ContactModel implements IContact {
         visibility: boolean;
     };
 
-    constructor(contact: Contact) {
+    constructor(contact: IContact) {
         this.id = contact.id;
-        this.firstName = {
-            value: contact.firstName,
-            visibility: true,
-        };
-        this.lastName = {
-            value: contact.lastName,
-            visibility: true,
-        };
-        this.email = {
-            value: contact.email,
-            visibility: true,
-        };
-        this.countryCode = {
-            value: contact.countryCode,
-            visibility: true,
-        };
-        this.phone = {
-            value: contact.phone,
-            visibility: true,
-        };
-        this.address = {
-            value: contact.address,
-            visibility: true,
-        };
-        this.company = {
-            value: contact.company,
-            visibility: true,
-        };
-        this.notes = {
-            value: contact.notes,
-            visibility: true,
-        };
+        this.firstName = contact.firstName;
+        this.lastName = contact.lastName;
+        this.email = contact.email;
+        this.countryCode = contact.countryCode;
+        this.phone = contact.phone;
+        this.address = contact.address;
+        this.company = contact.company;
+        this.notes = contact.notes;
     }
 
     toJSON() {
@@ -132,6 +108,46 @@ export class ContactModel implements IContact {
             notes: this.notes,
         };
     }
+
+    static fromJSON(jsonData: Contact): IContact {
+        const contact: IContact = {
+          id: jsonData?.id, 
+          firstName: {
+            value: jsonData.firstName || '',
+            visibility: true,
+          },
+          lastName: {
+            value: jsonData.lastName || '',
+            visibility: true,
+          },
+          email: {
+            value: jsonData.email || '',
+            visibility: true,
+          },
+          countryCode: {
+            value: jsonData.countryCode || '' as CountryCode,
+            visibility: true,
+          },
+          phone: {
+            value: jsonData.phone || '',
+            visibility: true,
+          },
+          company: {
+            value: jsonData.company || '',
+            visibility: true,
+          },
+          address: {
+            value: jsonData.address || '',
+            visibility: true,
+          },
+          notes: {
+            value: jsonData.notes || '',
+            visibility: true,
+          },
+        };
+    
+        return contact;
+      }
 }
 
 
