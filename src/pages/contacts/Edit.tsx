@@ -2,7 +2,7 @@ import { ActionFunctionArgs, Form, json, redirect, useNavigation, useRouteLoader
 import { CountryCode } from 'libphonenumber-js/types';
 
 import useInput from "../../hooks/useInput"
-import { Contact, ContactModel, IContact } from "../../types"
+import { IContact } from "../../types"
 import { store } from "../../store"
 import { showSnackbar } from "../../store/ui/uiActions"
 import { SnackbarTypes } from "../../store/ui/uiSlice"
@@ -72,7 +72,7 @@ const Edit = () => {
             <div className="form-control">
                 <label htmlFor="phone">Phone number <span className="text-red-500">*</span></label>
                 <input type="hidden" name="phone_visibility" value={phone.visibility.toString()} />
-                <PhoneNumberInput countryCode={contact.countryCode.value} value={phone.value} onChange={phoneOnChangeHandler} />
+                <PhoneNumberInput key={contact.countryCode.value} countryCode={contact.countryCode.value} value={phone.value} onChange={phoneOnChangeHandler} />
                 {!phone.isValid && phone.error && <small className="text-red-500">{phone.error}</small>}
 
                 <div className="mt-2">

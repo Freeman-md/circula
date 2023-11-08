@@ -14,8 +14,6 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({ initialVisibility, onToggle
     onToggle(newVisibility);
   };
 
-  console.log(isVisible)
-
   return (
     <div className="flex flex-col items-start">
       <span

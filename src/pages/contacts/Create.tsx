@@ -2,7 +2,7 @@ import { ActionFunctionArgs, Form, json, redirect, useNavigation } from "react-r
 import { CountryCode } from 'libphonenumber-js/types';
 
 import useInput from "../../hooks/useInput"
-import { Contact, ContactModel, IContact } from "../../types"
+import {  IContact } from "../../types"
 import { showSnackbar } from "../../store/ui/uiActions"
 import { SnackbarTypes } from "../../store/ui/uiSlice"
 import { store } from "../../store"

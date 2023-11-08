@@ -1,9 +1,8 @@
-
 import { useState, useEffect } from 'react'
 import { CountryCode, E164Number } from 'libphonenumber-js/types';
+import { parsePhoneNumber } from "libphonenumber-js";
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css'
-import CountrySelect from './CountrySelect';
 import { lookupCountry } from '../lib/phone-input';
 
 type PhoneNumberInputProps = {
@@ -16,6 +15,8 @@ type PhoneNumberInputProps = {
 
 const PhoneNumberInput = ({ value, name, onChange, countryCode = 'GB'} : PhoneNumberInputProps) => {
     const [country, setCountry] = useState<CountryCode>(countryCode);
+
+    const parsedPhoneNumber = (parsePhoneNumber(value as string, country)).number
 
     const countryChangeHandler = (country: CountryCode) => {
         setCountry(prevState => {
@@ -40,7 +41,7 @@ const PhoneNumberInput = ({ value, name, onChange, countryCode = 'GB'} : PhoneNu
         <input type="text" value={country || ''} readOnly name='country-code' hidden />
         <PhoneInput
             initialValueFormat="national"
-            countryCallingCodeEditable={false} defaultCountry={country} value={value} onCountryChange={countryChangeHandler} onChange={onChange} name="phone" />
+            countryCallingCodeEditable={false} defaultCountry={country} value={parsedPhoneNumber} onCountryChange={countryChangeHandler} onChange={onChange} name="phone" />
     </>
 }
 

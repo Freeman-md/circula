@@ -1,9 +1,10 @@
 import { ActionFunctionArgs, Link, json, redirect, useRouteLoaderData, useSubmit } from "react-router-dom"
 import { useState } from "react"
 import QRCode from 'qrcode.react';
+import { parsePhoneNumber } from "libphonenumber-js";
 
 import { generateProfilePhoto } from "../../utils"
-import { Contact, ContactModel, IContact } from "../../types"
+import { IContact } from "../../types"
 import { ReactComponent as Phone } from '../../assets/svgs/phone.svg'
 import { ReactComponent as Envelope } from '../../assets/svgs/envelope.svg'
 import { ReactComponent as QrCode } from '../../assets/svgs/qr-code.svg'
@@ -22,6 +23,7 @@ const View = () => {
     const submit = useSubmit()
 
     const profilePhotoURL = generateProfilePhoto(contact.firstName.value, contact.lastName.value)
+    const parsedPhoneNumber = (parsePhoneNumber(contact.phone.value, contact.countryCode.value)).number
     const shareQrCodeValue = `${window.location.origin}/share/${contact.id}`
 
     const deleteConfirmationHandler = () => setShowDeleteConfirmation(prevState => !prevState)
@@ -79,9 +81,9 @@ const View = () => {
                 </button>
             </div>
 
-            <Jumbotron as="a" href={`tel:${contact.phone}`} toggleButton={<ToggleButton key={contact.phone.visibility.toString()} initialVisibility={contact.phone.visibility} onToggle={(value) => toggleFieldVisibility(value, 'phone')} />}>
+            <Jumbotron as="a" href={`tel:${parsedPhoneNumber}`} toggleButton={<ToggleButton key={contact.phone.visibility.toString()} initialVisibility={contact.phone.visibility} onToggle={(value) => toggleFieldVisibility(value, 'phone')} />}>
                     <p className="text-sm">Phone</p>
-                    <p className="text-blue-500">{contact.phone.value}</p>
+                    <p className="text-blue-500">{`${parsedPhoneNumber}`}</p>
             </Jumbotron>
 
 
