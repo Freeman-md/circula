@@ -48,7 +48,6 @@ const View = () => {
         // update contact details
         await ContactsService.updateContact(contact);
       };
-      
 
     return <>
         <div className="container py-10 space-y-4 relative">
@@ -80,25 +79,23 @@ const View = () => {
                 </button>
             </div>
 
-            <Jumbotron as="a" href={`tel:${contact.phone}`} toggleButton={<ToggleButton initialVisibility={contact.phone.visibility} onToggle={(value) => toggleFieldVisibility(value, 'phone')} />}>
-                <div className="space-y-1.5">
+            <Jumbotron as="a" href={`tel:${contact.phone}`} toggleButton={<ToggleButton key={contact.phone.visibility.toString()} initialVisibility={contact.phone.visibility} onToggle={(value) => toggleFieldVisibility(value, 'phone')} />}>
                     <p className="text-sm">Phone</p>
                     <p className="text-blue-500">{contact.phone.value}</p>
-                </div>
             </Jumbotron>
 
 
-            <Jumbotron toggleButton={<ToggleButton initialVisibility={contact.address.visibility} onToggle={(value) => toggleFieldVisibility(value, 'address')} />}>
+            <Jumbotron toggleButton={<ToggleButton key={contact.address.visibility.toString()} initialVisibility={contact.address.visibility} onToggle={(value) => toggleFieldVisibility(value, 'address')} />}>
                 <p className="text-sm">Address</p>
                 <p>{contact.address.value || 'N/A'}</p>
             </Jumbotron>
 
-            <Jumbotron toggleButton={<ToggleButton initialVisibility={contact.company.visibility} onToggle={(value) => toggleFieldVisibility(value, 'company')} />}>
+            <Jumbotron toggleButton={<ToggleButton key={contact.company.visibility.toString()} initialVisibility={contact.company.visibility} onToggle={(value) => toggleFieldVisibility(value, 'company')} />}>
                 <p className="text-sm">Company</p>
                 <p>{contact.company.value || 'N/A'}</p>
             </Jumbotron>
 
-            <Jumbotron toggleButton={<ToggleButton initialVisibility={contact.notes.visibility} onToggle={(value) => toggleFieldVisibility(value, 'notes')} />}>
+            <Jumbotron toggleButton={<ToggleButton key={contact.notes.visibility.toString()} initialVisibility={contact.notes.visibility} onToggle={(value) => toggleFieldVisibility(value, 'notes')} />}>
                 <p className="text-sm">Notes</p>
                 <p>{contact.notes.value || 'N/A'}</p>
             </Jumbotron>
