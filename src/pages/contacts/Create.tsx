@@ -18,10 +18,10 @@ const Create = () => {
 
     const isFormSubmitting = navigation.state === 'submitting'
 
-    const { state: firstName, eventOnChangeHandler: firstNameOnChangeHandler } = useInput('', (value: string) => value.length !== 0, 'Please enter a first name', true)
-    const { state: lastName, eventOnChangeHandler: lastNameOnChangeHandler } = useInput('', (value: string) => value.length !== 0, 'Please enter a last name', true)
-    const { state: email, eventOnChangeHandler: emailOnChangeHandler } = useInput('', (value: string) => emailRegex.test(value), 'Please enter a valid email address', true)
-    const { state: phone, valueOnChangeHandler: phoneOnChangeHandler } = useInput('', (value: string) => phoneRegex.test(value), 'Please enter a valid phone number', true)
+    const { state: firstName, eventOnChangeHandler: firstNameOnChangeHandler } = useInput('', true, (value: string) => value.length !== 0, 'Please enter a first name', true)
+    const { state: lastName, eventOnChangeHandler: lastNameOnChangeHandler } = useInput('', true, (value: string) => value.length !== 0, 'Please enter a last name', true)
+    const { state: email, eventOnChangeHandler: emailOnChangeHandler } = useInput('', true, (value: string) => emailRegex.test(value), 'Please enter a valid email address', true)
+    const { state: phone, valueOnChangeHandler: phoneOnChangeHandler } = useInput('', true, (value: string) => phoneRegex.test(value), 'Please enter a valid phone number', true)
     const { state: company, valueOnChangeHandler: companyOnChangeHandler } = useInput()
     const { state: address, valueOnChangeHandler: addressOnChangeHandler } = useInput()
     const { state: notes, eventOnChangeHandler: notesOnChangeHandler } = useInput()

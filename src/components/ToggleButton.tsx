@@ -16,7 +16,7 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({ initialVisibility, onToggle
 
   return (
     <div className="flex flex-col items-start">
-      <button
+      <span
         onClick={toggleVisibility}
         className={`w-8 h-4 rounded-full relative transition-colors duration-300 ease-in-out ${
           isVisible ? 'bg-primary' : 'bg-gray-300'
@@ -27,7 +27,7 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({ initialVisibility, onToggle
             isVisible ? 'translate-x-full' : ''
           }`}
         />
-      </button>
+      </span>
       <p className="text-xs mt-1">
         {isVisible ? 'Public' : 'Private'}
       </p>

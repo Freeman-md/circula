@@ -9,6 +9,7 @@ import { SnackbarTypes } from "../../store/ui/uiSlice"
 import PlacesAutoComplete from "../../components/PlacesAutoComplete"
 import PhoneNumberInput from "../../components/PhoneNumberInput"
 import ContactsService from "../../lib/contacts-service";
+import ToggleButton from "../../components/ToggleButton";
 
 const Edit = () => {
     const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -20,13 +21,13 @@ const Edit = () => {
 
     const isFormSubmitting = navigation.state === 'submitting'
 
-    const { state: firstName, eventOnChangeHandler: firstNameOnChangeHandler } = useInput(contact.firstName.value, (value: string) => value.length !== 0, 'Please enter a first name', true)
-    const { state: lastName, eventOnChangeHandler: lastNameOnChangeHandler } = useInput(contact.lastName.value, (value: string) => value.length !== 0, 'Please enter a last name', true)
-    const { state: email, eventOnChangeHandler: emailOnChangeHandler } = useInput(contact.email.value, (value: string) => emailRegex.test(value), 'Please enter a valid email address', true)
-    const { state: phone, valueOnChangeHandler: phoneOnChangeHandler } = useInput(contact.phone.value, (value: string) => phoneRegex.test(value), 'Please enter a valid phone number', true)
-    const { state: company, valueOnChangeHandler: companyOnChangeHandler } = useInput(contact.company.value)
-    const { state: address, valueOnChangeHandler: addressOnChangeHandler } = useInput(contact.address.value)
-    const { state: notes, eventOnChangeHandler: notesOnChangeHandler } = useInput(contact.notes.value)
+    const { state: firstName, eventOnChangeHandler: firstNameOnChangeHandler, toggleFieldVisibilityHandler: toggleFirstNameVisibility } = useInput(contact.firstName.value, contact.firstName.visibility, (value: string) => value.length !== 0, 'Please enter a first name', true)
+    const { state: lastName, eventOnChangeHandler: lastNameOnChangeHandler, toggleFieldVisibilityHandler: toggleLastNameVisibility } = useInput(contact.lastName.value, contact.lastName.visibility, (value: string) => value.length !== 0, 'Please enter a last name', true)
+    const { state: email, eventOnChangeHandler: emailOnChangeHandler, toggleFieldVisibilityHandler: toggleEmailVisibility } = useInput(contact.email.value, contact.email.visibility, (value: string) => emailRegex.test(value), 'Please enter a valid email address', true)
+    const { state: phone, valueOnChangeHandler: phoneOnChangeHandler, toggleFieldVisibilityHandler: togglePhoneVisibility } = useInput(contact.phone.value, contact.phone.visibility, (value: string) => phoneRegex.test(value), 'Please enter a valid phone number', true)
+    const { state: company, valueOnChangeHandler: companyOnChangeHandler, toggleFieldVisibilityHandler: toggleCompanyVisibility } = useInput(contact.company.value, contact.company.visibility)
+    const { state: address, valueOnChangeHandler: addressOnChangeHandler, toggleFieldVisibilityHandler: toggleAddressVisibility } = useInput(contact.address.value, contact.address.visibility)
+    const { state: notes, eventOnChangeHandler: notesOnChangeHandler, toggleFieldVisibilityHandler: toggleNotesVisibility } = useInput(contact.notes.value, contact.notes.visibility)
 
     const formIsValid: boolean = firstName.isValid && lastName.isValid && email.isValid && phone.isValid && company.isValid && address.isValid && notes.isValid
 
@@ -37,52 +38,87 @@ const Edit = () => {
 
             <div className="form-control">
                 <label htmlFor="first_name">First name <span className="text-red-500">*</span></label>
+                <input type="hidden" name="first_name_visibility" value={firstName.visibility.toString()} />
                 <input type="text" name="first_name" id="first_name" value={firstName.value} onChange={firstNameOnChangeHandler} />
                 {!firstName.isValid && firstName.error && <small className="text-red-500">{firstName.error}</small>}
+
+                <div className="mt-2">
+                    <ToggleButton initialVisibility={firstName.visibility} onToggle={(value) => toggleFirstNameVisibility(value)} />
+                </div>
             </div>
 
             <div className="form-control">
                 <label htmlFor="last_name">Last name <span className="text-red-500">*</span></label>
+                <input type="hidden" name="last_name_visibility" value={lastName.visibility.toString()} />
                 <input type="text" name="last_name" id="last_name" value={lastName.value} onChange={lastNameOnChangeHandler} />
                 {!lastName.isValid && lastName.error && <small className="text-red-500">{lastName.error}</small>}
+
+                <div className="mt-2">
+                    <ToggleButton initialVisibility={lastName.visibility} onToggle={(value) => toggleLastNameVisibility(value)} />
+                </div>
             </div>
 
             <div className="form-control">
                 <label htmlFor="email">Email address <span className="text-red-500">*</span></label>
+                <input type="hidden" name="email_visibility" value={email.visibility.toString()} />
                 <input type="email" name="email" id="email" value={email.value} onChange={emailOnChangeHandler} />
                 {!email.isValid && email.error && <small className="text-red-500">{email.error}</small>}
+
+                <div className="mt-2">
+                    <ToggleButton initialVisibility={email.visibility} onToggle={(value) => toggleEmailVisibility(value)} />
+                </div>
             </div>
 
             <div className="form-control">
                 <label htmlFor="phone">Phone number <span className="text-red-500">*</span></label>
+                <input type="hidden" name="phone_visibility" value={phone.visibility.toString()} />
                 <PhoneNumberInput countryCode={contact.countryCode.value} value={phone.value} onChange={phoneOnChangeHandler} />
                 {!phone.isValid && phone.error && <small className="text-red-500">{phone.error}</small>}
+
+                <div className="mt-2">
+                    <ToggleButton initialVisibility={phone.visibility} onToggle={(value) => togglePhoneVisibility(value)} />
+                </div>
             </div>
 
             <div className="form-control col-span-2">
                 <label htmlFor="company">Company / Organization</label>
+                <input type="hidden" name="company_visibility" value={company.visibility.toString()} />
                 <PlacesAutoComplete name="company" value={company.value} onChange={companyOnChangeHandler} types={['establishment']} />
                 {
                     !company.isValid && company.error
                         ? <small className="text-red-500">{company.error}</small>
                         : <small>Powered by Google</small>
                 }
+
+                <div className="mt-2">
+                    <ToggleButton initialVisibility={company.visibility} onToggle={(value) => toggleCompanyVisibility(value)} />
+                </div>
             </div>
 
             <div className="form-control col-span-2">
                 <label htmlFor="address">Address</label>
+                <input type="hidden" name="address_visibility" value={address.visibility.toString()} />
                 <PlacesAutoComplete name="address" value={address.value} onChange={addressOnChangeHandler} />
                 {
                     !address.isValid && address.error
                         ? <small className="text-red-500">{address.error}</small>
                         : <small>Powered by Google</small>
                 }
+
+                <div className="mt-2">
+                    <ToggleButton initialVisibility={address.visibility} onToggle={(value) => toggleAddressVisibility(value)} />
+                </div>
             </div>
 
             <div className="form-control col-span-2">
                 <label htmlFor="notes">Notes</label>
+                <input type="hidden" name="notes_visibility" value={notes.visibility.toString()} />
                 <textarea rows={3} id="notes" name="notes" value={notes.value} onChange={notesOnChangeHandler} />
                 {!notes.isValid && notes.error && <small className="text-red-500">{notes.error}</small>}
+
+                <div className="mt-2">
+                    <ToggleButton initialVisibility={notes.visibility} onToggle={(value) => toggleNotesVisibility(value)} />
+                </div>
             </div>
 
             <div className="col-span-2 pt-4">
@@ -101,26 +137,50 @@ export async function action({ request, params }: ActionFunctionArgs) {
     const contactId = params.id
     const data: FormData = await request.formData()
 
-    const contactData: Contact = {
+    const contactData: IContact = {
         id: contactId,
-        firstName: data.get('first_name')?.toString() ?? '',
-        lastName: data.get('last_name')?.toString() ?? '',
-        email: data.get('email')?.toString() ?? '',
-        countryCode: (data.get('country-code')?.toString() ?? '') as CountryCode,
-        phone: data.get('phone')?.toString() ?? '',
-        company: data.get('company')?.toString() ?? '',
-        address: data.get('address')?.toString() ?? '',
-        notes: data.get('notes')?.toString() ?? ''
+        firstName: {
+            value: data.get('first_name')?.toString() ?? '',
+            visibility: data.get('first_name_visibility') === 'true'
+        },
+        lastName: {
+            value: data.get('last_name')?.toString() ?? '',
+            visibility: data.get('last_name_visibility') === 'true'
+        },
+        email: {
+            value: data.get('email')?.toString() ?? '',
+            visibility: data.get('email_visibility') === 'true'
+        },
+        countryCode: {
+            value: (data.get('country-code')?.toString() ?? '') as CountryCode,
+            visibility: data.get('phone_visibility') === 'true'
+        },
+        phone: {
+            value: data.get('phone')?.toString() ?? '',
+            visibility: data.get('phone_visibility') === 'true'
+        },
+        company: {
+            value: data.get('company')?.toString() ?? '',
+            visibility: data.get('company_visibility') === 'true'
+        },
+        address: {
+            value: data.get('address')?.toString() ?? '',
+            visibility: data.get('address_visibility') === 'true'
+        },
+        notes: {
+            value: data.get('notes')?.toString() ?? '',
+            visibility: data.get('notes_visibility') === 'true'
+        },
     }
 
     try {
-        await ContactsService.updateContact(ContactModel.fromJSON(contactData))
+        await ContactsService.updateContact(contactData)
 
         store.dispatch(showSnackbar({
             type: SnackbarTypes.Success,
             content: 'Contact updated successfully!'
         }))
-    
+
         return redirect(`/${contactId}`)
     } catch (error: any) {
         store.dispatch(showSnackbar({

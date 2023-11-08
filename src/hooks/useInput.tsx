@@ -1,86 +1,114 @@
 import { ChangeEvent, useReducer, useEffect } from "react"
 import { E164Number } from 'libphonenumber-js/types';
+import { IContact } from "../types";
 
 type InputState = {
     value: string,
+    visibility: boolean,
     error: string,
     isValid: boolean,
 }
 type InputAction = {
     type: string,
-    payload: string,
+    payload: {
+        value: string,
+        visibility?: boolean,
+    }
 }
 
 type ValueChangeHandler = (value: string | E164Number) => void; // Common type for value change handlers
 type EventChangeHandler = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void; // Event handler type
 
-const useInput = (defaultValue: string = '', validationLogic: Function = (value: string) => value.length !== 0, errorMessage: string = 'Invalid input', required: boolean = false) => {
+const useInput = (
+    defaultValue: string = '',
+    defaultVisibility: boolean = false,
+    validationLogic: (value: string) => boolean = (value) => value.length !== 0,
+    errorMessage: string = 'Invalid input',
+    required: boolean = false
+  ) => {
     const initialInputState: InputState = {
-        value: defaultValue,
-        error: '',
-        isValid: !required // set input to valid at default if input is not required
-    }
-
+      value: defaultValue,
+      visibility: defaultVisibility,
+      error: '',
+      isValid: !required,
+    };
+  
     const inputReducer = (state: InputState, action: InputAction) => {
-        switch (action.type) {
-            case 'INPUT':
-                const value = action.payload
-                let isInputValid: boolean = state.isValid
-
-                // validate input only if it is required
-                if (required) {
-                    isInputValid = validationLogic(value)
-                }
-
-                return {
-                    error: !isInputValid ? errorMessage : '',
-                    isValid: isInputValid,
-                    value,
-                }
-            default:
-                break;
-        }
-
-        return state
-    }
-
-    const [value, dispatch] = useReducer(inputReducer, initialInputState)
-
+      switch (action.type) {
+        case 'INPUT':
+          const value = action.payload.value;
+          let isInputValid: boolean = state.isValid;
+  
+          if (required) {
+            isInputValid = validationLogic(value);
+          }
+  
+          return {
+            ...state,
+            error: !isInputValid ? errorMessage : '',
+            isValid: isInputValid,
+            value,
+          };
+        case 'TOGGLE_VISIBILITY':
+          return {
+            ...state,
+            visibility: action.payload.visibility!,
+          };
+        default:
+          return state;
+      }
+    };
+  
+    const [value, dispatch] = useReducer(inputReducer, initialInputState);
+  
     useEffect(() => {
-        if (!defaultValue) return
-
-        dispatch({
-            type: 'INPUT',
-            payload: defaultValue
-        })
-    }, [defaultValue])
-
-    const eventOnChangeHandler: EventChangeHandler = (e) => {
-        dispatch({
-            type: 'INPUT',
-            payload: e.target.value
-        })
-    }
-
-    const valueOnChangeHandler: ValueChangeHandler = (value) => {
-        dispatch({
-            type: 'INPUT',
-            payload: value
-        })
-      };
-
-    const clearInput = () => dispatch({
+      if (!defaultValue) return;
+  
+      dispatch({
         type: 'INPUT',
-        payload: ''
-    })
+        payload: { value: defaultValue },
+      });
+    }, [defaultValue]);
+  
+    const eventOnChangeHandler: EventChangeHandler = (e) => {
+      dispatch({
+        type: 'INPUT',
+        payload: { value: e.target.value },
+      });
+    };
+  
+    const valueOnChangeHandler: ValueChangeHandler = (value) => {
+      dispatch({
+        type: 'INPUT',
+        payload: { value },
+      });
+    };
 
-    return {
-        eventOnChangeHandler,
-        valueOnChangeHandler,
-        clearInput,
-        state: value, // state object with properties value, isValid, and error
-        validateInput: validationLogic
+    const toggleFieldVisibilityHandler = (visibility: boolean) => {
+        dispatch({
+        type: 'TOGGLE_VISIBILITY',
+        payload: { visibility, value: initialInputState.value  }
+      })
     }
+    
+  
+    const clearInput = () => {
+      dispatch({
+        type: 'INPUT',
+        payload: { value: '' },
+      });
+    };
+  
+    return {
+      eventOnChangeHandler,
+      valueOnChangeHandler,
+      toggleFieldVisibilityHandler,
+      clearInput,
+      state: value,
+      validateInput: validationLogic,
+    };
+
 }
+  
 
 export default useInput
