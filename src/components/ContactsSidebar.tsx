@@ -3,7 +3,7 @@ import { useState, useEffect, ChangeEvent } from 'react'
 import { useAppDispatch, useAppSelector } from '../hooks/useReduxHooks'
 import ContactsPane from './ContactsPane'
 import SearchPane from './SearchPane'
-import { Contact, GroupedContacts } from '../types'
+import { IContact, GroupedContacts } from '../types'
 import { groupAndSortContactsByFirstLetter } from '../utils'
 import { Link } from 'react-router-dom'
 import { toggleSidebar } from '../store/ui/uiSlice'
@@ -17,7 +17,7 @@ const ContactsSidebar = ({ classes = 'h-screen w-1/4' }: ContactsSidebarProps) =
     const [filteredContacts, setFilteredContacts] = useState<GroupedContacts>({})
     const dispatch = useAppDispatch()
 
-    const contacts: Contact[] = useAppSelector(state => state.contacts.contacts)
+    const contacts: IContact[] = useAppSelector(state => state.contacts.contacts)
 
     const onSearchTextChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setSearchText(e.target.value?.toLowerCase().trim())
@@ -31,7 +31,7 @@ const ContactsSidebar = ({ classes = 'h-screen w-1/4' }: ContactsSidebarProps) =
         setFilteredContacts(() =>
             groupAndSortContactsByFirstLetter(
                 contacts
-                    .filter(contact => contact?.firstName.toLowerCase().includes(searchText) || contact?.lastName.toLowerCase().includes(searchText))
+                    .filter(contact => contact?.firstName.value.toLowerCase().includes(searchText) || contact?.lastName.value.toLowerCase().includes(searchText))
             )
         )
     }, [searchText, contacts])

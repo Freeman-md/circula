@@ -3,7 +3,7 @@ import { useState } from "react"
 import QRCode from 'qrcode.react';
 
 import { generateProfilePhoto } from "../../utils"
-import { Contact } from "../../types"
+import { IContact } from "../../types"
 import { ReactComponent as Phone } from '../../assets/svgs/phone.svg'
 import { ReactComponent as Envelope } from '../../assets/svgs/envelope.svg'
 import { ReactComponent as QrCode } from '../../assets/svgs/qr-code.svg'
@@ -15,12 +15,12 @@ import { SnackbarTypes } from "../../store/ui/uiSlice"
 import ContactsService from "../../lib/contacts-service";
 
 const View = () => {
-    const contact = useRouteLoaderData('get-contact') as Contact
+    const contact = useRouteLoaderData('get-contact') as IContact
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
     const submit = useSubmit()
 
-    const profilePhotoURL = generateProfilePhoto(contact.firstName, contact.lastName)
+    const profilePhotoURL = generateProfilePhoto(contact.firstName.value, contact.lastName.value)
     const shareQrCodeValue = `${window.location.origin}/share/${contact.id}`
 
     const deleteConfirmationHandler = () => setShowDeleteConfirmation(prevState => !prevState)
@@ -46,17 +46,17 @@ const View = () => {
                     backgroundImage: `url(${profilePhotoURL})`,
                 }}></div>
                 <p className="text-xl font-semibold">
-                    {contact.firstName} {contact.lastName}
+                    {contact.firstName.value} {contact.lastName.value}
                 </p>
             </div>
 
             <div className="w-full flex flex-wrap items-center justify-center space-x-4">
-                <a href={`tel:${contact.phone}`} className="px-6 py-2 flex flex-col items-center justify-center space-y-1 transition duration-200 bg-secondary/10 rounded-lg hover:bg-primary hover:text-white mb-4">
+                <a href={`tel:${contact.phone.value}`} className="px-6 py-2 flex flex-col items-center justify-center space-y-1 transition duration-200 bg-secondary/10 rounded-lg hover:bg-primary hover:text-white mb-4">
                     <Phone className="w-6" />
                     <p className="text-sm px-2">Call</p>
                 </a>
 
-                <a href={`mailto:${contact.email}`} className="px-6 py-2 flex flex-col items-center justify-center space-y-1 transition duration-200 bg-secondary/10 rounded-lg hover:bg-primary hover:text-white mb-4">
+                <a href={`mailto:${contact.email.value}`} className="px-6 py-2 flex flex-col items-center justify-center space-y-1 transition duration-200 bg-secondary/10 rounded-lg hover:bg-primary hover:text-white mb-4">
                     <Envelope className="w-6" />
                     <p className="text-sm px-2">Mail</p>
                 </a>
@@ -69,22 +69,22 @@ const View = () => {
 
             <Jumbotron as="a" href={`tel:${contact.phone}`}>
                 <p className="text-sm">Phone</p>
-                <p className="text-blue-500">{contact.phone}</p>
+                <p className="text-blue-500">{contact.phone.value}</p>
             </Jumbotron>
 
             <Jumbotron>
                 <p className="text-sm">Address</p>
-                <p>{contact.address || 'N/A'}</p>
+                <p>{contact.address.value || 'N/A'}</p>
             </Jumbotron>
 
             <Jumbotron>
                 <p className="text-sm">Company</p>
-                <p>{contact.company || 'N/A'}</p>
+                <p>{contact.company.value || 'N/A'}</p>
             </Jumbotron>
 
             <Jumbotron>
                 <p className="text-sm">Notes</p>
-                <p>{contact.notes || 'N/A'}</p>
+                <p>{contact.notes.value || 'N/A'}</p>
             </Jumbotron>
 
             <Jumbotron as="button" className="w-full !text-red-500 !font-medium text-left" onClick={deleteConfirmationHandler}>

@@ -12,7 +12,43 @@ export type Contact = {
     notes: string;
 };
 
-export class ContactModel {
+export interface IContact {
+    id?: string;
+    firstName: {
+      value: string;
+      visibility: boolean;
+    };
+    lastName: {
+      value: string;
+      visibility: boolean;
+    };
+    email: {
+      value: string;
+      visibility: boolean;
+    };
+    countryCode: {
+      value: CountryCode;
+      visibility: boolean;
+    };
+    phone: {
+      value: string;
+      visibility: boolean;
+    };
+    address: {
+      value: string;
+      visibility: boolean;
+    };
+    company: {
+      value: string;
+      visibility: boolean;
+    };
+    notes: {
+      value: string;
+      visibility: boolean;
+    };
+  }
+
+export class ContactModel implements IContact {
     id?: string;
     firstName: {
         value: string;
@@ -107,7 +143,7 @@ export type User = {
 }
 
 export type GroupedContacts = {
-    [key: string]: Contact[]
+    [key: string]: IContact[]
 }
 
 export type UseInputProps = {

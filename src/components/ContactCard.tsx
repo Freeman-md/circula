@@ -1,13 +1,13 @@
 import { NavLink } from "react-router-dom";
-import { Contact } from "../types";
+import { IContact } from "../types";
 import { generateProfilePhoto } from "../utils";
 import { toggleSidebar } from "../store/ui/uiSlice";
 import { useAppDispatch } from "../hooks/useReduxHooks";
 
-const ContactCard = ({ contact }: { contact: Contact }) => {
+const ContactCard = ({ contact }: { contact: IContact }) => {
     const dispatch = useAppDispatch()
 
-    const profilePhotoURL = generateProfilePhoto(contact.firstName, contact.lastName);
+    const profilePhotoURL = generateProfilePhoto(contact.firstName.value, contact.lastName.value);
 
     const cardBaseClassName = "flex space-x-4 items-center -mx-2 p-3.5";
     const activeCardClassName = `${cardBaseClassName} bg-secondary/20`;
@@ -30,7 +30,7 @@ const ContactCard = ({ contact }: { contact: Contact }) => {
                 }}
             ></div>
             <p>
-                {contact.firstName} {contact.lastName}
+                {contact.firstName.value} {contact.lastName.value}
             </p>
         </NavLink>
     );

@@ -9,7 +9,7 @@ import {
   onSnapshot,
   QuerySnapshot,
 } from "firebase/firestore";
-import { Contact, ContactModel } from "../types";
+import { Contact, ContactModel, IContact } from "../types";
 import { db } from "../db/firebase";
 import { AppDispatch } from "../store";
 import { setContacts } from "../store/contacts/contactsSlice";
@@ -36,12 +36,12 @@ class ContactsService {
     const unsubscribe = onSnapshot(
       q,
       (querySnapshot: QuerySnapshot) => {
-        const contacts: Contact[] = [];
+        const contacts: IContact[] = [];
 
         querySnapshot.forEach((doc) => {
           contacts.push({
             id: doc.id,
-            ...doc.data() as Contact,
+            ...doc.data() as IContact,
           });
         });
 
@@ -74,7 +74,10 @@ class ContactsService {
   static async updateContact(contact: Contact) {
     this.collectionPath = this.getCollectionPath();
     const id = contact.id!;
-    await setDoc(doc(db, this.collectionPath, id), contact);
+
+    const { id: contactId, ...contactData } = (new ContactModel(contact)).toJSON()
+
+    await setDoc(doc(db, this.collectionPath, id), contactData);
   }
 
   static async deleteContact(id: string) {

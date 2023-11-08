@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { Contact } from '../../types'
+import { IContact } from '../../types'
 
 type ContactsState = {
-    contacts: Contact[]
+    contacts: IContact[]
 }
 
 
