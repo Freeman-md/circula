@@ -18,41 +18,53 @@ const Share = () => {
                 backgroundImage: `url(${profilePhotoURL})`,
             }}></div>
             <p className="text-xl font-semibold">
-                {contact.firstName.value} {contact.lastName.value}
+                {contact.firstName.visibility && contact.firstName.value} {contact.lastName.visibility && contact.lastName.value}
             </p>
         </div>
 
         <div className="w-full flex flex-wrap items-center justify-center">
-            <a href={`tel:${contact.phone.value}`} className="px-6 py-2 flex flex-col items-center justify-center space-y-1 transition duration-200 bg-secondary/10 rounded-lg hover:bg-primary hover:text-white mr-10">
+            {
+                contact.phone.visibility && <a href={`tel:${contact.phone.value}`} className="px-6 py-2 flex flex-col items-center justify-center space-y-1 transition duration-200 bg-secondary/10 rounded-lg hover:bg-primary hover:text-white mx-5">
                 <Phone className="w-6" />
                 <p className="text-sm px-2">Call</p>
             </a>
+            }
 
-            <a href={`mailto:${contact.email.value}`} className="px-6 py-2 flex flex-col items-center justify-center space-y-1 transition duration-200 bg-secondary/10 rounded-lg hover:bg-primary hover:text-white mr-10">
+            {
+                contact.email.visibility && <a href={`mailto:${contact.email.value}`} className="px-6 py-2 flex flex-col items-center justify-center space-y-1 transition duration-200 bg-secondary/10 rounded-lg hover:bg-primary hover:text-white mx-5">
                 <Envelope className="w-6" />
                 <p className="text-sm px-2">Mail</p>
             </a>
+            }
         </div>
 
-        <Jumbotron as="a" href={`tel:${contact.phone.value}`}>
+        {
+            contact.phone.visibility && <Jumbotron as="a" href={`tel:${contact.phone.value}`}>
             <p className="text-sm">Phone</p>
             <p className="text-blue-500">{contact.phone.value}</p>
         </Jumbotron>
+        }
 
-        <Jumbotron>
+        {
+            contact.address.visibility && <Jumbotron>
             <p className="text-sm">Address</p>
             <p>{contact.address.value || 'N/A'}</p>
         </Jumbotron>
+        }
 
-        <Jumbotron>
+        {
+            contact.company.visibility && <Jumbotron>
             <p className="text-sm">Company</p>
             <p>{contact.company.value || 'N/A'}</p>
         </Jumbotron>
+        }
 
-        <Jumbotron>
+        {
+            contact.notes.visibility && <Jumbotron>
             <p className="text-sm">Notes</p>
             <p>{contact.notes.value || 'N/A'}</p>
         </Jumbotron>
+        }
     </div>
 
     <footer className='fixed bottom-2 inset-x-0'>

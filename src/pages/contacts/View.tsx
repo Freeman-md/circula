@@ -15,6 +15,7 @@ import { showSnackbar } from "../../store/ui/uiActions"
 import { SnackbarTypes } from "../../store/ui/uiSlice"
 import ContactsService from "../../lib/contacts-service";
 import ToggleButton from "../../components/ToggleButton";
+import CopyToClipboardButton from "../../components/CopyToClipboardButton";
 
 const View = () => {
     const contact = useRouteLoaderData('get-contact') as IContact
@@ -43,13 +44,13 @@ const View = () => {
     const toggleFieldVisibility = async (value: boolean, property: keyof IContact) => {
         // Check if the property is an object with a 'visibility' property
         if (typeof contact[property] === 'object') {
-          // Type assertion to inform TypeScript about the property type
-          (contact[property] as { value: string; visibility: boolean }).visibility = value;
+            // Type assertion to inform TypeScript about the property type
+            (contact[property] as { value: string; visibility: boolean }).visibility = value;
         }
 
         // update contact details
         await ContactsService.updateContact(contact);
-      };
+    };
 
     return <>
         <div className="container py-10 space-y-4 relative">
@@ -82,8 +83,8 @@ const View = () => {
             </div>
 
             <Jumbotron as="a" href={`tel:${parsedPhoneNumber}`} toggleButton={<ToggleButton key={contact.phone.visibility.toString()} initialVisibility={contact.phone.visibility} onToggle={(value) => toggleFieldVisibility(value, 'phone')} />}>
-                    <p className="text-sm">Phone</p>
-                    <p className="text-blue-500">{`${parsedPhoneNumber}`}</p>
+                <p className="text-sm">Phone</p>
+                <p className="text-blue-500">{`${parsedPhoneNumber}`}</p>
             </Jumbotron>
 
 
@@ -120,9 +121,13 @@ const View = () => {
         <Modal isOpen={isModalOpen} onClose={toggleModalHandler}>
             <div className='flex flex-col justify-center items-center pb-4'>
                 <h2 className="text-2xl font-semibold mb-4 text-center">Scan QR Code</h2>
-                <QRCode value={shareQrCodeValue} size={400} />
+                <div className="flex flex-col items-center justify-center space-y-2">
+                    <QRCode value={shareQrCodeValue} size={250} />
+                    <CopyToClipboardButton value={shareQrCodeValue} />
+                </div>
             </div>
         </Modal>
+
     </>
 }
 

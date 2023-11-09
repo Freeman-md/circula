@@ -16,7 +16,7 @@ type PhoneNumberInputProps = {
 const PhoneNumberInput = ({ value, name, onChange, countryCode = 'GB'} : PhoneNumberInputProps) => {
     const [country, setCountry] = useState<CountryCode>(countryCode);
 
-    const parsedPhoneNumber = (parsePhoneNumber(value as string, country)).number
+    const parsedPhoneNumber = value ? (parsePhoneNumber(value as string, country)).number : value
 
     const countryChangeHandler = (country: CountryCode) => {
         setCountry(prevState => {

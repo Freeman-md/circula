@@ -56,7 +56,7 @@ const Modal = ({ isOpen, onClose, children } : ModalProps) => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center">
                 <div className="fixed inset-0 bg-gray-800 opacity-60" onClick={closeModalHandler}></div>
-                <motion.div className="relative z-10 p-4 bg-white rounded-md shadow-md w-2/3 sm:w-1/2 space-y-4" variants={dropIn}
+                <motion.div className="relative z-10 p-4 bg-white rounded-md shadow-md w-4/5 sm:w-1/2 space-y-4" variants={dropIn}
                     initial="hidden"
                     animate="visible"
                     exit="exit">
