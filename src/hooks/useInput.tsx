@@ -1,6 +1,5 @@
 import { ChangeEvent, useReducer, useEffect } from "react"
 import { E164Number } from 'libphonenumber-js/types';
-import { IContact } from "../types";
 
 type InputState = {
     value: string,

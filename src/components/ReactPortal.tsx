@@ -1,4 +1,4 @@
-import { useState, useLayoutEffect, ReactNode, FC } from 'react';
+import { useState, useLayoutEffect, ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { createWrapperAndAppendToBody } from '../utils';
 

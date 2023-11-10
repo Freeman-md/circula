@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 
-import ContactsEmpty from "./ContactsEmpty"
 import { GroupedContacts } from "../types"
 import ContactCard from "./ContactCard"
 import { isObjectEmpty } from "../utils"

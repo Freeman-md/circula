@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from "framer-motion"
+import { motion } from "framer-motion"
 
 import { ReactComponent as CheckCircle } from '../assets/svgs/check-circle.svg'
 import { ReactComponent as InformationCircle } from '../assets/svgs/information-circle.svg'

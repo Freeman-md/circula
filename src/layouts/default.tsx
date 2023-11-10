@@ -1,5 +1,4 @@
 import { Outlet } from 'react-router-dom'
-import { useEffect } from 'react';
 
 import ContactsSidebar from '../components/ContactsSidebar';
 import { ReactComponent as Hamburger } from '../assets/svgs/bars-2.svg'
