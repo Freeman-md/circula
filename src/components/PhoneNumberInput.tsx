@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { CountryCode, E164Number } from 'libphonenumber-js/types';
 import { parsePhoneNumber } from "libphonenumber-js";
 import PhoneInput from 'react-phone-number-input';
@@ -16,17 +16,25 @@ type PhoneNumberInputProps = {
 const PhoneNumberInput = ({ value, name, onChange, countryCode = 'GB'} : PhoneNumberInputProps) => {
     const [country, setCountry] = useState<CountryCode>(countryCode);
 
-    const [parsedPhoneNumber, setParsedPhoneNumber] = useState<E164Number | undefined>('')
+    // const [parsedPhoneNumber, setParsedPhoneNumber] = useState<E164Number | undefined>('')
 
-    useEffect(() => {
-        setParsedPhoneNumber(() => {
-            if (value) {
+    // useEffect(() => {
+    //     setParsedPhoneNumber(() => {
+    //         if (value) {
+    //             return (parsePhoneNumber(value as string, country)).number
+    //         }
+
+    //         return value
+    //     })
+    // })
+
+    const parsedPhoneNumber = useMemo(() => {
+            if (value && value.length > 5) {
                 return (parsePhoneNumber(value as string, country)).number
             }
 
             return value
-        })
-    })
+    }, [value, country])
 
     const countryChangeHandler = (country: CountryCode) => {
         setCountry(prevState => {
