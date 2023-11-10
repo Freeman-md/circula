@@ -13,6 +13,7 @@ const Guest = () => {
 
     return <div className="h-screen flex flex-col space-y-6 items-center justify-center">
         <Logo className="w-80" />
+
         <h2 className="text-2xl text-primary text-center">Elevate Your Contacts with Simplicity and Sophistication!</h2>
 
         <div className="flex flex-wrap items-center justify-center">
@@ -22,6 +23,10 @@ const Guest = () => {
                 </button>
         </div>
 
+        <div className="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative" role="alert">
+        Explore features as a visitor – public contacts. Continue with Google for personal contacts, exclusively yours!
+        </div>
+        
         <button className="underline" onClick={visitorModeHandler}>Continue as a visitor</button>
 
         <footer className='fixed bottom-2 inset-x-0'>
