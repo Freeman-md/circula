@@ -1,5 +1,5 @@
 import { ActionFunctionArgs, Link, json, redirect, useRouteLoaderData, useSubmit } from "react-router-dom"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import QRCode from 'qrcode.react';
 import { parsePhoneNumber } from "libphonenumber-js";
 
@@ -19,13 +19,17 @@ import CopyToClipboardButton from "../../components/CopyToClipboardButton";
 
 const View = () => {
     const contact = useRouteLoaderData('get-contact') as IContact
+    const [sharedContactId, setSharedContactId] = useState<string | null>(null)
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
     const submit = useSubmit()
 
     const profilePhotoURL = generateProfilePhoto(contact.firstName.value, contact.lastName.value)
     const parsedPhoneNumber = (parsePhoneNumber(contact.phone.value, contact.countryCode.value)).number
-    const shareQrCodeValue = `${window.location.origin}/share/${contact.id}`
+
+    const shareQrCodeValue = useMemo(() => {
+        return `${window.location.origin}/share/${sharedContactId}`
+    }, [sharedContactId])
 
     const deleteConfirmationHandler = () => setShowDeleteConfirmation(prevState => !prevState)
 
@@ -35,6 +39,14 @@ const View = () => {
             null, {
             method: 'post',
         })
+    }
+
+    const shareContact = async () => {
+        const docSnap = await ContactsService.createSharedContact(contact)
+
+        setSharedContactId(() => docSnap.id)
+        
+        toggleModalHandler()
     }
 
     const toggleModalHandler = () => {
@@ -76,7 +88,7 @@ const View = () => {
                     <p className="text-sm px-2">Mail</p>
                 </a>
 
-                <button onClick={toggleModalHandler} className="px-6 py-2 flex flex-col items-center justify-center space-y-1 transition duration-200 bg-secondary/10 rounded-lg hover:bg-primary hover:text-white mb-4">
+                <button onClick={shareContact} className="px-6 py-2 flex flex-col items-center justify-center space-y-1 transition duration-200 bg-secondary/10 rounded-lg hover:bg-primary hover:text-white mb-4">
                     <QrCode className="w-6" />
                     <p className="text-sm px-2">Share</p>
                 </button>

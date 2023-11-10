@@ -16,7 +16,17 @@ type PhoneNumberInputProps = {
 const PhoneNumberInput = ({ value, name, onChange, countryCode = 'GB'} : PhoneNumberInputProps) => {
     const [country, setCountry] = useState<CountryCode>(countryCode);
 
-    const parsedPhoneNumber = value ? (parsePhoneNumber(value as string, country)).number : value
+    const [parsedPhoneNumber, setParsedPhoneNumber] = useState<E164Number | undefined>('')
+
+    useEffect(() => {
+        setParsedPhoneNumber(() => {
+            if (value) {
+                return (parsePhoneNumber(value as string, country)).number
+            }
+
+            return value
+        })
+    })
 
     const countryChangeHandler = (country: CountryCode) => {
         setCountry(prevState => {

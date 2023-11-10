@@ -5,11 +5,17 @@ import { ContactModel } from "../../types"
 import { ReactComponent as Phone } from '../../assets/svgs/phone.svg'
 import { ReactComponent as Envelope } from '../../assets/svgs/envelope.svg'
 import Jumbotron from "../../components/Jumbotron"
+import { useEffect } from "react"
+import ContactsService from "../../lib/contacts-service"
 
 const Share = () => {
     const contact = useLoaderData() as ContactModel
 
     const profilePhotoURL = generateProfilePhoto(contact.firstName.value, contact.lastName.value)
+
+    useEffect(() => {
+        ContactsService.deleteSharedContact(contact.id!)
+    })
 
     return <><div className="container py-10 space-y-4">
 

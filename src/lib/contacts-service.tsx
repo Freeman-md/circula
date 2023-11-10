@@ -9,7 +9,7 @@ import {
   onSnapshot,
   QuerySnapshot,
 } from "firebase/firestore";
-import { Contact, ContactModel, IContact } from "../types";
+import { ContactModel, IContact } from "../types";
 import { db } from "../db/firebase";
 import { AppDispatch } from "../store";
 import { setContacts } from "../store/contacts/contactsSlice";
@@ -59,6 +59,12 @@ class ContactsService {
     return await getDoc(docRef);
   }
 
+  static async fetchSharedContact(id: string) {
+    const docRef = doc(db, 'shared-contacts', id);
+    
+    return await getDoc(docRef);
+  }
+
   static async createContact(contact: IContact) {
     this.collectionPath = this.getCollectionPath();
 
@@ -67,6 +73,16 @@ class ContactsService {
 
     // save new document to firebase which automatically creates an ID for the document
     const docRef = await addDoc(collection(db, this.collectionPath), contactData);
+
+    return docRef;
+  }
+
+  static async createSharedContact(contact: IContact) {
+    // extract contact data without ID from newly created contact as ID is undefined
+    const { id, ...contactData } = (new ContactModel(contact)).toJSON()
+
+    // save new document to firebase which automatically creates an ID for the document
+    const docRef = await addDoc(collection(db, 'shared-contacts'), contactData);
 
     return docRef;
   }
@@ -83,6 +99,10 @@ class ContactsService {
   static async deleteContact(id: string) {
     this.collectionPath = this.getCollectionPath();
     await deleteDoc(doc(db, this.collectionPath, id));
+  }
+
+  static async deleteSharedContact(id: string) {
+    await deleteDoc(doc(db, 'shared-contacts', id))
   }
 }
 

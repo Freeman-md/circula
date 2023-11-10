@@ -6,7 +6,7 @@ import ErrorPage from '../pages/Error'
 import View, { action as deleteContactAction } from '../pages/contacts/View'
 import Edit, { action as editContactAction } from '../pages/contacts/Edit'
 import Share from '../pages/contacts/Share'
-import { getContactLoader } from '../utils/route-loaders'
+import { getContactLoader, getSharedContactLoader } from '../utils/route-loaders'
 import ProtectedRoute from '../components/ProtectedRoute'
 
 const router = createBrowserRouter([
@@ -45,7 +45,7 @@ const router = createBrowserRouter([
         ]
     },
     {
-        loader: getContactLoader,
+        loader: getSharedContactLoader,
         path: '/share/:id',
         element: <Share />,
         

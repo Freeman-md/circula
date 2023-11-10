@@ -14,3 +14,16 @@ export async function getContactLoader({ params }: LoaderFunctionArgs) {
         ...docSnap.data() as Contact
     }, { status: 200 })
 }
+
+export async function getSharedContactLoader({ params }: LoaderFunctionArgs) {
+    const docSnap = await ContactsService.fetchSharedContact(params.id!)
+
+    if (!docSnap.exists()) {
+        throw json({ message: "Contact information not found" }, { status: 404 })
+    }
+
+    return json({
+        id: docSnap.id,
+        ...docSnap.data() as Contact
+    }, { status: 200 })
+}
