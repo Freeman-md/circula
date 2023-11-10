@@ -1,4 +1,4 @@
-import { ActionFunctionArgs, Link, json, redirect, useRouteLoaderData, useSubmit } from "react-router-dom"
+import { ActionFunctionArgs, Link, LoaderFunctionArgs, json, redirect, useRouteLoaderData, useSubmit } from "react-router-dom"
 import { useMemo, useState } from "react"
 import QRCode from 'qrcode.react';
 import { parsePhoneNumber } from "libphonenumber-js";
@@ -19,6 +19,7 @@ import CopyToClipboardButton from "../../components/CopyToClipboardButton";
 
 const View = () => {
     const contact = useRouteLoaderData('get-contact') as IContact
+    
     const [sharedContactId, setSharedContactId] = useState<string | null>(null)
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
@@ -144,6 +145,20 @@ const View = () => {
 }
 
 export default View
+
+export async function getContactLoader({ params }: LoaderFunctionArgs) {
+    
+    const docSnap = await ContactsService.fetchContact(params.id!)
+
+    if (!docSnap.exists()) {
+        throw json({ message: "Contact information not found" }, { status: 404 })
+    }
+
+    return json({
+        id: docSnap.id,
+        ...docSnap.data() as IContact
+    }, { status: 200 })
+}
 
 export async function action({ request, params }: ActionFunctionArgs) {
     const id = params.id!

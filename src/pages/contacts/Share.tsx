@@ -1,7 +1,7 @@
-import { useLoaderData } from "react-router-dom"
+import { LoaderFunctionArgs, json, useLoaderData } from "react-router-dom"
 
 import { generateProfilePhoto } from "../../utils"
-import { ContactModel } from "../../types"
+import { ContactModel, IContact } from "../../types"
 import { ReactComponent as Phone } from '../../assets/svgs/phone.svg'
 import { ReactComponent as Envelope } from '../../assets/svgs/envelope.svg'
 import Jumbotron from "../../components/Jumbotron"
@@ -86,3 +86,16 @@ const Share = () => {
 }
 
 export default Share
+
+export async function getSharedContactLoader({ params }: LoaderFunctionArgs) {
+    const docSnap = await ContactsService.fetchSharedContact(params.id!)
+
+    if (!docSnap.exists()) {
+        throw json({ message: "Contact information not found" }, { status: 404 })
+    }
+
+    return json({
+        id: docSnap.id,
+        ...docSnap.data() as IContact
+    }, { status: 200 })
+}

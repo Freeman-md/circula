@@ -3,10 +3,9 @@ import DefaultLayout from '../layouts/default'
 import Home from '../pages/Home'
 import Create, { action as createAction } from '../pages/contacts/Create'
 import ErrorPage from '../pages/Error'
-import View, { action as deleteContactAction } from '../pages/contacts/View'
+import View, { action as deleteContactAction, getContactLoader } from '../pages/contacts/View'
 import Edit, { action as editContactAction } from '../pages/contacts/Edit'
-import Share from '../pages/contacts/Share'
-import { getContactLoader, getSharedContactLoader } from '../utils/route-loaders'
+import Share, { getSharedContactLoader } from '../pages/contacts/Share'
 import ProtectedRoute from '../components/ProtectedRoute'
 
 const router = createBrowserRouter([
@@ -41,6 +40,10 @@ const router = createBrowserRouter([
                         action: editContactAction,
                     },
                 ]
+            },
+            {
+                path: '/personal',
+                element: <View />
             }
         ]
     },
@@ -49,7 +52,7 @@ const router = createBrowserRouter([
         path: '/share/:id',
         errorElement: <ErrorPage />,
         element: <Share />,
-        
+
     }
 ])
 
