@@ -16,18 +16,6 @@ type PhoneNumberInputProps = {
 const PhoneNumberInput = ({ value, name, onChange, countryCode = 'GB'} : PhoneNumberInputProps) => {
     const [country, setCountry] = useState<CountryCode>(countryCode);
 
-    // const [parsedPhoneNumber, setParsedPhoneNumber] = useState<E164Number | undefined>('')
-
-    // useEffect(() => {
-    //     setParsedPhoneNumber(() => {
-    //         if (value) {
-    //             return (parsePhoneNumber(value as string, country)).number
-    //         }
-
-    //         return value
-    //     })
-    // })
-
     const parsedPhoneNumber = useMemo(() => {
             if (value && value.length > 5) {
                 return (parsePhoneNumber(value as string, country)).number
