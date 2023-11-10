@@ -2,14 +2,15 @@ import { ActionFunctionArgs, Form, json, redirect, useNavigation } from "react-r
 import { CountryCode } from 'libphonenumber-js/types';
 
 import useInput from "../../hooks/useInput"
-import {  IContact } from "../../types"
+import { IContact } from "../../types"
 import { showSnackbar } from "../../store/ui/uiActions"
 import { SnackbarTypes } from "../../store/ui/uiSlice"
 import { store } from "../../store"
-import PlacesAutoComplete from '../../components/PlacesAutoComplete'
-import PhoneNumberInput from "../../components/PhoneNumberInput"
 import ContactsService from "../../lib/contacts-service";
-import ToggleButton from "../../components/ToggleButton";
+import FormInput from "../../components/FormInput";
+import FormPhoneNumberInput from "../../components/FormPhoneNumberInput";
+import FormPlacesAutoComplete from "../../components/FormPlacesAutoComplete";
+import FormTextAreaInput from "../../components/FormTextAreaInput";
 
 const Create = () => {
     //eslint-disable-next-line
@@ -37,90 +38,88 @@ const Create = () => {
 
         <Form method="post" className="space-y-6 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-6 sm:w-3/4">
 
-            <div className="form-control">
-                <label htmlFor="first_name">First name <span className="text-red-500">*</span></label>
-                <input type="hidden" name="first_name_visibility" value={firstName.visibility.toString()} />
-                <input type="text" name="first_name" id="first_name" value={firstName.value} onChange={firstNameOnChangeHandler} />
-                {!firstName.isValid && firstName.error && <small className="text-red-500">{firstName.error}</small>}
+            <FormInput
+                label="First name"
+                name="first_name"
+                type="text"
+                value={firstName.value}
+                onChange={firstNameOnChangeHandler}
+                isValid={firstName.isValid}
+                error={firstName.error}
+                toggleVisibility={toggleFirstNameVisibility}
+                visibility={firstName.visibility}
+            />
 
-                <div className="mt-2">
-                    <ToggleButton initialVisibility={firstName.visibility} onToggle={(value) => toggleFirstNameVisibility(value)} />
-                </div>
-            </div>
+            <FormInput
+                label="Last name"
+                name="last_name"
+                type="text"
+                value={lastName.value}
+                onChange={lastNameOnChangeHandler}
+                isValid={lastName.isValid}
+                error={lastName.error}
+                toggleVisibility={toggleLastNameVisibility}
+                visibility={lastName.visibility}
+            />
 
-            <div className="form-control">
-                <label htmlFor="last_name">Last name <span className="text-red-500">*</span></label>
-                <input type="hidden" name="last_name_visibility" value={lastName.visibility.toString()} />
-                <input type="text" name="last_name" id="last_name" value={lastName.value} onChange={lastNameOnChangeHandler} />
-                {!lastName.isValid && lastName.error && <small className="text-red-500">{lastName.error}</small>}
+            <FormInput
+                label="Email address"
+                name="email"
+                type="email"
+                value={email.value}
+                onChange={emailOnChangeHandler}
+                isValid={email.isValid}
+                error={email.error}
+                toggleVisibility={toggleEmailVisibility}
+                visibility={email.visibility}
+            />
 
-                <div className="mt-2">
-                    <ToggleButton initialVisibility={lastName.visibility} onToggle={(value) => toggleLastNameVisibility(value)} />
-                </div>
-            </div>
+            <FormPhoneNumberInput
+                label="Phone number"
+                name="phone"
+                value={phone.value}
+                onChange={phoneOnChangeHandler}
+                isValid={phone.isValid}
+                error={phone.error}
+                toggleVisibility={togglePhoneVisibility}
+                visibility={phone.visibility}
+            />
 
-            <div className="form-control">
-                <label htmlFor="email">Email address <span className="text-red-500">*</span></label>
-                <input type="hidden" name="email_visibility" value={email.visibility.toString()} />
-                <input type="email" name="email" id="email" value={email.value} onChange={emailOnChangeHandler} />
-                {!email.isValid && email.error && <small className="text-red-500">{email.error}</small>}
+            <FormPlacesAutoComplete
+                label="Company / Organization"
+                name="company"
+                value={company.value}
+                onChange={companyOnChangeHandler}
+                isValid={company.isValid}
+                error={company.error}
+                toggleVisibility={toggleCompanyVisibility}
+                visibility={company.visibility}
+                required={false}
+            />
 
-                <div className="mt-2">
-                    <ToggleButton initialVisibility={email.visibility} onToggle={(value) => toggleEmailVisibility(value)} />
-                </div>
-            </div>
+            <FormPlacesAutoComplete
+                label="Address"
+                name="address"
+                value={address.value}
+                onChange={addressOnChangeHandler}
+                isValid={address.isValid}
+                error={address.error}
+                toggleVisibility={toggleAddressVisibility}
+                visibility={address.visibility}
+                required={false}
+            />
 
-            <div className="form-control">
-                <label htmlFor="phone">Phone number <span className="text-red-500">*</span></label>
-                <input type="hidden" name="phone_visibility" value={phone.visibility.toString()} />
-                <PhoneNumberInput countryCode='GB' value={phone.value} onChange={phoneOnChangeHandler} />
-                {!phone.isValid && phone.error && <small className="text-red-500">{phone.error}</small>}
-
-                <div className="mt-2">
-                    <ToggleButton initialVisibility={phone.visibility} onToggle={(value) => togglePhoneVisibility(value)} />
-                </div>
-            </div>
-
-            <div className="form-control col-span-2">
-                <label htmlFor="company">Company / Organization</label>
-                <input type="hidden" name="company_visibility" value={company.visibility.toString()} />
-                <PlacesAutoComplete name="company" value={company.value} onChange={companyOnChangeHandler} types={['establishment']} />
-                {
-                    !company.isValid && company.error
-                        ? <small className="text-red-500">{company.error}</small>
-                        : <small>Powered by Google</small>
-                }
-
-                <div className="mt-2">
-                    <ToggleButton initialVisibility={company.visibility} onToggle={(value) => toggleCompanyVisibility(value)} />
-                </div>
-            </div>
-
-            <div className="form-control col-span-2">
-                <label htmlFor="address">Address</label>
-                <input type="hidden" name="address_visibility" value={address.visibility.toString()} />
-                <PlacesAutoComplete name="address" value={address.value} onChange={addressOnChangeHandler} />
-                {
-                    !address.isValid && address.error
-                        ? <small className="text-red-500">{address.error}</small>
-                        : <small>Powered by Google</small>
-                }
-
-                <div className="mt-2">
-                    <ToggleButton initialVisibility={address.visibility} onToggle={(value) => toggleAddressVisibility(value)} />
-                </div>
-            </div>
-
-            <div className="form-control col-span-2">
-                <label htmlFor="notes">Notes</label>
-                <input type="hidden" name="notes_visibility" value={notes.visibility.toString()} />
-                <textarea rows={3} id="notes" name="notes" value={notes.value} onChange={notesOnChangeHandler} />
-                {!notes.isValid && notes.error && <small className="text-red-500">{notes.error}</small>}
-
-                <div className="mt-2">
-                    <ToggleButton initialVisibility={notes.visibility} onToggle={(value) => toggleNotesVisibility(value)} />
-                </div>
-            </div>
+            <FormTextAreaInput 
+                label="Notes"
+                name="notes"
+                value={notes.value}
+                onChange={notesOnChangeHandler}
+                isValid={notes.isValid}
+                error={notes.error}
+                toggleVisibility={toggleNotesVisibility}
+                visibility={notes.visibility}
+                required={false}
+            />
 
             <div className="col-span-2 pt-4">
                 <button disabled={!formIsValid || isFormSubmitting} className="btn">

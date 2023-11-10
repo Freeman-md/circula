@@ -47,6 +47,7 @@ const router = createBrowserRouter([
     {
         loader: getSharedContactLoader,
         path: '/share/:id',
+        errorElement: <ErrorPage />,
         element: <Share />,
         
     }
